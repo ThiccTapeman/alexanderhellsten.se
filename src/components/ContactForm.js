@@ -13,46 +13,38 @@ export default function ContactForm() {
   const onSubmit = async (e) => {};
 
   return (
-    <form onSubmit={onSubmit} style={{ maxWidth: 480 }} netlify>
-      <label>
-        Name
-        <input
-          name="name"
-          type="text"
-          value={form.name}
-          onChange={onChange}
-          required
-        />
-      </label>
-
-      <label>
-        Email
-        <input
-          name="email"
-          type="email"
-          value={form.email}
-          onChange={onChange}
-          required
-        />
-      </label>
-
-      <label>
-        Message
-        <textarea
-          name="message"
-          rows="6"
-          value={form.message}
-          onChange={onChange}
-          required
-        />
-      </label>
-
-      <button type="submit" disabled={status === "loading"}>
-        {status === "loading" ? "Sending..." : "Send"}
-      </button>
-
-      {status === "sent" && <p>Sent</p>}
-      {status === "error" && <p>Failed to send</p>}
+    <form name="contact" netlify>
+      <p>
+        <label>
+          <input type="text" name="name" placeholder="Your full name" />
+        </label>
+      </p>
+      <p>
+        <label>
+          <input
+            type="email"
+            name="email"
+            placeholder="your.email@example.com"
+          />
+        </label>
+      </p>
+      <p>
+        <label>
+          <input type="text" name="subject" placeholder="What's this about?" />
+        </label>
+      </p>
+      <p>
+        <label>
+          <input
+            type="text"
+            name="text"
+            placeholder="Tell me about your project, timeline, budget, or any questions you have..."
+          />
+        </label>
+      </p>
+      <p>
+        <button type="submit">Send</button>
+      </p>
     </form>
   );
 }

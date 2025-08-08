@@ -14,11 +14,11 @@ export default function Hero() {
         </p>
         <div className="flex mt-15 gap-10 flex-col md:flex-row">
           <div className="flex gap-4">
-            <Clock2></Clock2>
+            <Clock2 className="text-yellow-300"></Clock2>
             Usually responds within 24 hours
           </div>
           <div className="flex gap-4">
-            <CircleCheckBig></CircleCheckBig>
+            <CircleCheckBig className="text-yellow-300"></CircleCheckBig>
             Aviable for new projects
           </div>
         </div>

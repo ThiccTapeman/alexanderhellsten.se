@@ -10,29 +10,10 @@ export default function ContactForm() {
     setForm((prev) => ({ ...prev, [name]: value }));
   };
 
-  const onSubmit = async (e) => {
-    e.preventDefault();
-    setStatus("loading");
-    try {
-      const res = await fetch("/api/contact", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(form),
-      });
-      const data = await res.json();
-      if (data.ok) {
-        setStatus("sent");
-        setForm({ name: "", email: "", message: "" });
-      } else {
-        setStatus("error");
-      }
-    } catch {
-      setStatus("error");
-    }
-  };
+  const onSubmit = async (e) => {};
 
   return (
-    <form onSubmit={onSubmit} style={{ maxWidth: 480 }}>
+    <form onSubmit={onSubmit} style={{ maxWidth: 480 }} netlify>
       <label>
         Name
         <input

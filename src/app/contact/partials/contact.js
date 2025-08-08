@@ -10,9 +10,9 @@ export default function Contact() {
           <div className="w-full">
             <h2 className="text-4xl font-bold mb-3">Send Me A Message</h2>
             <p className="text-gray-300">
-              Fill out the form below and I'll get back to you as soon as
-              possible. I'm excited to learn about your project and discuss how
-              we can work together.
+              Fill out the form below and I&apos;ll get back to you as soon as
+              possible. I&apos;m excited to learn about your project and discuss
+              how we can work together.
             </p>
             <ContactForm debug></ContactForm>
           </div>

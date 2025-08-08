@@ -14,7 +14,7 @@ export default function Contact() {
               possible. I&apos;m excited to learn about your project and discuss
               how we can work together.
             </p>
-            <ContactForm debug></ContactForm>
+            <ContactForm></ContactForm>
           </div>
           <div className="w-full">
             <h2 className="text-2xl font-bold mb-4">Other ways to connect</h2>

@@ -21,12 +21,10 @@ export default function Hero() {
               View Projects
               <ArrowRight size={20} />
             </ActionButton>
-            <DelayedLink
-              href="/projects"
-              className="group text-xs sm:text-base flex items-center gap-2 px-8 font-semibold py-3 text-black rounded hover:bg-black hover:text-white border-1 box-border w-max transition duration-200">
+            <ActionButton href="/_Alexander_Hellsten_Resume.pdf" secondary>
               <Download className="transition duration-50" size={20} />
               Download Resumé
-            </DelayedLink>
+            </ActionButton>
           </div>
         </div>
         <div className="w-full h-40 md:block relative max-w-90 mb-46 mt-60 ">

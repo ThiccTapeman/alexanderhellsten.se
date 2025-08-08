@@ -15,6 +15,7 @@ export default function ContactForm() {
   return (
     <form name="contact" netlify>
       <input type="hidden" name="form-name" value="contact" />
+
       <input type="text" name="name" placeholder="Your full name" />
       <input type="email" name="email" placeholder="your.email@example.com" />
       <input type="text" name="subject" placeholder="What is this about?" />

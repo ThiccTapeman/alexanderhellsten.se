@@ -14,37 +14,15 @@ export default function ContactForm() {
 
   return (
     <form name="contact" netlify>
-      <p>
-        <label>
-          <input type="text" name="name" placeholder="Your full name" />
-        </label>
-      </p>
-      <p>
-        <label>
-          <input
-            type="email"
-            name="email"
-            placeholder="your.email@example.com"
-          />
-        </label>
-      </p>
-      <p>
-        <label>
-          <input type="text" name="subject" placeholder="What's this about?" />
-        </label>
-      </p>
-      <p>
-        <label>
-          <input
-            type="text"
-            name="text"
-            placeholder="Tell me about your project, timeline, budget, or any questions you have..."
-          />
-        </label>
-      </p>
-      <p>
-        <button type="submit">Send</button>
-      </p>
+      <input type="hidden" name="form-name" value="contact" />
+      <input type="text" name="name" placeholder="Your full name" />
+      <input type="email" name="email" placeholder="your.email@example.com" />
+      <input type="text" name="subject" placeholder="What is this about?" />
+      <textarea
+        name="message"
+        placeholder="Tell me about your project, timeline, budget, or any questions you have..."
+      />
+      <button type="submit">Send</button>
     </form>
   );
 }

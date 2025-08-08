@@ -8,7 +8,7 @@ export default function Loader({ visible }) {
       <div
         className={
           "w-full bg-white z-50 absolute bottom-0 transition-all duration-300 " +
-          (visible ? "h-1/2" : "h-0")
+          (visible ? "h-full md:h-1/2" : "h-0")
         }></div>
       <div
         className={

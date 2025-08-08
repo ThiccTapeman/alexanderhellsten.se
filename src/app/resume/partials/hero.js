@@ -74,7 +74,7 @@ export default function Hero() {
           </div>
         </div>
         <div className="flex flex-col w-full mt-10 lg:w-1/3">
-          <h2 className="mb-2 text-xl">Technologies I've worked with:</h2>
+          <h2 className="mb-2 text-xl">Technologies I&apos;ve worked with:</h2>
         </div>
         <TagSlider content={Technologies} as={TechnologyTag}></TagSlider>
       </div>

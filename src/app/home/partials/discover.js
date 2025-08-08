@@ -7,7 +7,7 @@ export default function Discover() {
       <div className="container mx-auto pt-20 pb-20">
         <h1 className="text-5xl text-black font-bold mb-4">Explore My Work</h1>
         <p className="text-lg text-black mb-8">
-          Discover the projects I've worked on, showcasing my skills and
+          Discover the projects I&apos;ve worked on, showcasing my skills and
           creativity.
         </p>
         <div className="flex flex-col gap-4 lg:flex-row">

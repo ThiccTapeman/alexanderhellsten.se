@@ -1,14 +1,24 @@
 "use client";
-import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useLoading } from "@/components/LoadingProvider";
 
-export default function DelayedLink({ href, delay = 800, children, ...props }) {
+export default function DelayedLink({
+  href,
+  delay = 800,
+  closeMenu,
+  children,
+  ...props
+}) {
+  const pathname = usePathname();
   const router = useRouter();
   const { show } = useLoading();
 
   function onClick(e) {
     e.preventDefault();
+
+    if (pathname == href) return;
+
+    if (typeof closeMenu === "function") closeMenu();
     show();
     setTimeout(() => router.push(href), delay);
   }

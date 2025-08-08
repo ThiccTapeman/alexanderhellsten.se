@@ -4,6 +4,7 @@ import "./globals.css";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { LoadingProvider } from "@/components/LoadingProvider";
+import Loader from "@/components/Loader"; // Import Loader
 
 const geistSans = Geist({ variable: "--font-geist-sans", subsets: ["latin"] });
 const geistMono = Geist_Mono({
@@ -16,6 +17,7 @@ export default function RootLayout({ children }) {
     <html lang="en">
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased h-screen bg-white`}>
+        {/* Loader splash always on top */}
         <LoadingProvider initialDelay={300} betweenDelay={200}>
           <Header />
           {children}

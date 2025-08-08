@@ -1,4 +1,4 @@
-import { FileText, Briefcase, Mail } from "lucide-react";
+import { FileText, Briefcase, Mail, House } from "lucide-react";
 import { Menu, MenuButton, MenuItems, MenuItem } from "@headlessui/react";
 import Logo from "./Logo";
 import HeaderNavigationLink from "./HeaderNavigationLink";
@@ -25,20 +25,26 @@ export default function Header() {
                     Quick Links
                   </h3>
                   <HeaderNavigationLink
-                    href="/portfolio"
+                    href="/"
                     delay="delay-100"
+                    title="Home"
+                    description="Quick overview of me"
+                    Icon={House}></HeaderNavigationLink>
+                  <HeaderNavigationLink
+                    href="/portfolio"
+                    delay="delay-200"
                     title="Portfolio"
                     description="View my latest projects and designs"
                     Icon={Briefcase}></HeaderNavigationLink>
                   <HeaderNavigationLink
                     href="/resume"
-                    delay="delay-200"
+                    delay="delay-300"
                     title="Resumé"
                     description="View and download my latest resumé"
                     Icon={FileText}></HeaderNavigationLink>
                   <HeaderNavigationLink
                     href="/contact"
-                    delay="delay-300"
+                    delay="delay-400"
                     title="Contact"
                     description="Ways to get in touch with me"
                     Icon={Mail}></HeaderNavigationLink>

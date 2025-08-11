@@ -7,6 +7,7 @@ import { useCallback } from "react";
 
 const FILE_EXT = /\.(pdf|docx?|xlsx?|csv|zip|png|jpe?g|gif|mp4|mp3)$/i;
 
+// Gives a delay to make the transition between pages more seemless
 export default function DelayedLink({
   href,
   children,
@@ -28,17 +29,22 @@ export default function DelayedLink({
 
     if (pathname == href) return;
 
+    // If theres a menu to close when clicking the link. Close it.
     if (typeof closeMenu === "function") closeMenu();
     show();
+
+    // Reroutes after the delay
     setTimeout(() => router.push(href), delay);
   }
 
-  if (isFile) {
+  // Delay, return an "a" element with the delay functionallity, if it's refering to a file, make it downloadable.
+  if (delay > 0 || isFile) {
     return (
       <a
         href={href}
         className={className}
-        download={download ?? true}
+        onClick={isFile ? "" : onClick}
+        download={download && isFile ? true : false}
         target={target}
         rel={rel}>
         {children}
@@ -46,19 +52,7 @@ export default function DelayedLink({
     );
   }
 
-  if (delay > 0) {
-    return (
-      <a
-        href={href}
-        className={className}
-        onClick={onClick}
-        target={target}
-        rel={rel}>
-        {children}
-      </a>
-    );
-  }
-
+  // No delay, just return a normal Link tag
   return (
     <Link href={href} className={className} target={target} rel={rel}>
       {children}

@@ -1,3 +1,11 @@
+/*
+ *
+ * Code was written by Alexander Hellstén
+ * Github: https://github.com/ThiccTapeman
+ * Project Github: https://github.com/ThiccTapeman/alexanderhellsten.se
+ *
+ */
+
 import { ProfileLinkCard } from "@/components/ProfileLinkCard";
 import { FileText, Briefcase, Mail } from "lucide-react";
 

@@ -46,7 +46,7 @@ export default function ContactCard({
 
   return (
     <a
-      className="group w-full border p-10 rounded-xl text-black hover:bg-black hover:text-white cursor-pointer  transition duration-200"
+      className="group w-full border p-10 rounded-xl text-black hover:shadow-md hover:bg-black hover:text-white cursor-pointer  transition duration-200"
       href={copy ? "#" : href}
       onClick={handleClick}
       {...props}>

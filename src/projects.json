@@ -1,0 +1,20 @@
+{
+  "projects": [
+    {
+      "projectName": "Portfolio",
+      "projectDescription": "Developed a responsive portfolio website to showcase my projects.",
+      "projectImage": "/projectImages/alexanderhellsten.se.png",
+      "projectDate": "Aug 2025",
+      "projectTechnologies": [
+        "JavaScript",
+        "React",
+        "Tailwind CSS",
+        "Node.js",
+        "Git",
+        "Next.js"
+      ],
+      "projectGithub": "https://github.com/ThiccTapeman/alexanderhellsten.se",
+      "projectHomepage": "https://alexanderhellsten.se"
+    }
+  ]
+}

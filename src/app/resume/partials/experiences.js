@@ -1,25 +1,8 @@
 import { Calendar } from "lucide-react";
+import { parseJsonFile } from "next/dist/build/load-jsconfig";
+import experiences from "../../../experiences.json";
 
 export default function Experiences() {
-  const Experiences = [
-    {
-      title: "Construction Work",
-      company: "Hellstén's Bygg och Entreprenard",
-      description:
-        "I worked with refuling the machines on a large scale road project.",
-      date: "Sep. 2024 - Aug. 2025",
-      current: true,
-    },
-    {
-      title: "Summer Job (3 weeks)",
-      company: "Stadsmuseet, Eskilstuna",
-      description:
-        "I worked on documenting artworks by photographing them for an art exhibition, focusing on capturing the current appearance of Eskilstuna.",
-      date: "Jun. 2022 - Jul. 2022",
-      current: false,
-    },
-  ];
-
   return (
     <section className="min-h-max p-4 bg-white">
       <div className="container mx-auto mt-10 mb-10">
@@ -27,11 +10,11 @@ export default function Experiences() {
           Experiences
         </h2>
         <div className="">
-          {Experiences.map((experience) => (
+          {experiences["experiences"].map((experience) => (
             <div
               key={experience.title}
               className={
-                "p-10 w-full rounded-2xl mb-5 text-black text-xs flex flex-col md:flex-row border-1"
+                "p-10 w-full rounded-2xl mb-5 text-black text-xs flex flex-col md:flex-row border-1 border-black/10 hover:shadow-md transition duration-200"
               }>
               <div className="w-full md:w-3/4 mb-4">
                 <div className="flex md:justify-between md:items-center md:flex-row flex-col-reverse">

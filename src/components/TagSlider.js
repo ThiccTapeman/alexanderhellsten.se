@@ -13,7 +13,7 @@ function LoopingValue(speed, min = 0, max = 100) {
   return value;
 }
 
-export default function TagSlider({ content, as }) {
+export default function TagSlider({ content, as, onClick, ...props }) {
   const As = as;
   const wrapperRef = useRef(null);
   const contentRef = useRef(null);
@@ -115,17 +115,17 @@ export default function TagSlider({ content, as }) {
       <div className="flex relative w-max gap-2" style={{ left: -totalOffset }}>
         <div className="flex gap-2" ref={contentRef}>
           {content.map((item, i) => (
-            <As item={item} key={`content0-${i}`} />
+            <As item={item} key={`content0-${i}`} {...props} />
           ))}
         </div>
         <div className="flex gap-2">
           {content.map((item, i) => (
-            <As item={item} key={`content1-${i}`} />
+            <As item={item} key={`content1-${i}`} {...props} />
           ))}
         </div>
         <div className="flex gap-2">
           {content.map((item, i) => (
-            <As item={item} key={`content2-${i}`} />
+            <As item={item} key={`content2-${i}`} {...props} />
           ))}
         </div>
       </div>

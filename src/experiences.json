@@ -1,0 +1,18 @@
+{
+  "experiences": [
+    {
+      "title": "Construction Work",
+      "company": "Hellstén's Bygg och Entreprenard",
+      "description": "I worked with refuling the machines on a large scale road project.",
+      "date": "Sep. 2024 - Aug. 2025",
+      "current": true
+    },
+    {
+      "title": "Summer Job (3 weeks)",
+      "company": "Stadsmuseet, Eskilstuna",
+      "description": "I worked on documenting artworks by photographing them for an art exhibition, focusing on capturing the current appearance of Eskilstuna.",
+      "date": "Jun. 2022 - Jul. 2022",
+      "current": false
+    }
+  ]
+}

@@ -1,0 +1,20 @@
+{
+  "educations": [
+    {
+      "title": "Technology Program",
+      "school": "Grillska Gymnasiet, Eskilstuna",
+      "subject": "Information and Media Technology",
+      "date": "Aug. 2021 - Jun. 2024",
+      "description": "DWDWADWADWADWAWD",
+      "recent": true
+    },
+    {
+      "title": "Elementary School",
+      "school": "Gökstensskolan, Eskilstuna",
+      "subject": "Grade 1 - 9",
+      "date": "Aug. 2012 - Jun. 2021",
+      "description": "DWDWADWADWADWAWD",
+      "recent": false
+    }
+  ]
+}

@@ -1,24 +1,7 @@
 import { Calendar } from "lucide-react";
+import educations from "../../../education.json";
 
 export default function Education() {
-  const Educations = [
-    {
-      title: "Technology Program",
-      school: "Grillska Gymnasiet, Eskilstuna",
-      subject: "Information and Media Technology",
-      date: "Aug. 2021 - Jun. 2024",
-      description: "DWDWADWADWADWAWD",
-      recent: true,
-    },
-    {
-      title: "Elementary School",
-      school: "Gökstensskolan, Eskilstuna",
-      subject: "Grade 1 - 9",
-      date: "Aug. 2012 - Jun. 2021",
-      description: "DWDWADWADWADWAWD",
-      recent: false,
-    },
-  ];
   return (
     <section className="p-4 bg-white">
       <div className="container mx-auto mt-10 mb-10">
@@ -26,11 +9,11 @@ export default function Education() {
           Education
         </h2>
         <div className="flex gap-10 flex-col md:flex-row">
-          {Educations.map((education) => (
+          {educations["educations"].map((education) => (
             <div
               key={education.title}
               className={
-                "p-10 w-full rounded-2xl mb-5 text-black text-xs flex flex-col md:flex-row border-1"
+                "p-10 w-full rounded-2xl mb-5 text-black text-xs flex flex-col md:flex-row border-1  border-black/10 hover:shadow-md transition duration-200"
               }>
               <div className="w-full mb-4">
                 <div className="w-full flex md:justify-between md:items-center flex-col-reverse gap-2 md:flex-row">

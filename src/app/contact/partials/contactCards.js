@@ -8,16 +8,14 @@ export default function ContactCards() {
         <ContactCard
           href="mailto:alexanderhellsten7@gmail.com"
           title={"Email"}
-          value="alexanderhellsten7@gmail.com"
-          description={"Email me anytime"}>
+          value="alexanderhellsten7@gmail.com">
           <Mail size={20}></Mail>
         </ContactCard>
         <ContactCard
           copy
           text="0704735886"
           title={"Phone"}
-          value="+46 070 473 58 86"
-          description="Call me during buisness hours">
+          value="+46 070 473 58 86">
           <Phone size={20}></Phone>
         </ContactCard>
         <ContactCard
@@ -25,8 +23,7 @@ export default function ContactCards() {
           value="Sodermanland, Sweden"
           href="https://www.google.com/maps/place/Södermanland+County/@59.0072016,16.3283747,8z/data=!4m6!3m5!1s0x465ed834436269a7:0x300fef341e48af0!8m2!3d59.0336349!4d16.7518899!16zL20vMHp3YnY?entry=ttu&g_ep=EgoyMDI1MDgwNS4wIKXMDSoASAFQAw%3D%3D"
           target="_blank"
-          rel="noopener noreferrer"
-          description="Aviable for local meetings">
+          rel="noopener noreferrer">
           <MapPinned size={20}></MapPinned>
         </ContactCard>
       </div>

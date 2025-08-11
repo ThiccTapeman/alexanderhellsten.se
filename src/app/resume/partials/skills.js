@@ -1,3 +1,11 @@
+/*
+ *
+ * Code was written by Alexander Hellstén
+ * Github: https://github.com/ThiccTapeman
+ * Project Github: https://github.com/ThiccTapeman/alexanderhellsten.se
+ *
+ */
+
 export default function Skills() {
   return (
     <section className="p-4 bg-black">

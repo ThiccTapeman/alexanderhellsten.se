@@ -1,3 +1,11 @@
+/*
+ *
+ * Code was written by Alexander Hellstén
+ * Github: https://github.com/ThiccTapeman
+ * Project Github: https://github.com/ThiccTapeman/alexanderhellsten.se
+ *
+ */
+
 import { Calendar } from "lucide-react";
 import { parseJsonFile } from "next/dist/build/load-jsconfig";
 import experiences from "../../../experiences.json";

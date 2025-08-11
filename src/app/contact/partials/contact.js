@@ -1,3 +1,11 @@
+/*
+ *
+ * Code was written by Alexander Hellstén
+ * Github: https://github.com/ThiccTapeman
+ * Project Github: https://github.com/ThiccTapeman/alexanderhellsten.se
+ *
+ */
+
 import ContactForm from "@/components/ContactForm";
 import SocialButtons from "@/components/SocialButtons";
 import { cookies } from "next/headers";

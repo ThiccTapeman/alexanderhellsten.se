@@ -10,10 +10,10 @@ import { NextResponse } from "next/server";
 import nodemailer from "nodemailer";
 import { readFile } from "fs/promises";
 
-import ownerHtml from "./owner.html";
-import userHtml from "./user.html";
+import fs from "node:fs/promises";
+import path from "node:path";
 
-export const runtime = "nodejs";
+export const runtime = "nodejs"; // Allows native libraries
 export const dynamic = "force-dynamic";
 
 // Ensures that the enviroment is valid
@@ -44,15 +44,15 @@ function injectVars(template, vars) {
   return template.replace(/{{\s*(\w+)\s*}}/g, (_, key) => vars[key] || "");
 }
 
-// Read HTML templates
-const [ownerTemplate, userTemplate] = await Promise.all([
-  readFile(new URL("./owner.html", import.meta.url), "utf8"),
-  readFile(new URL("./user.html", import.meta.url), "utf8"),
-]);
+// Loads template from public/emails/${name}.html
+async function loadTemplate(name) {
+  const filePath = path.join(process.cwd(), "public", "emails", `${name}.html`);
+  return fs.readFile(filePath, "utf8");
+}
 
 // The mail that will be sent to the owner
 const ownerInjectedHtml = ({ name, email, subject, message }) => {
-  return injectVars(ownerTemplate, {
+  return injectVars(loadTemplate("owner"), {
     name,
     email,
     subject,
@@ -64,7 +64,7 @@ const ownerInjectedHtml = ({ name, email, subject, message }) => {
 
 // The mail that will be sent to the user
 const userInjectedHtml = ({ name }) => {
-  return injectVars(userTemplate, {
+  return injectVars(loadTemplate("user"), {
     name,
     brand,
     site_url: process.env.SITE_URL || "#",

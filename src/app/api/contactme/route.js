@@ -51,7 +51,7 @@ const [ownerTemplate, userTemplate] = await Promise.all([
 ]);
 
 // The mail that will be sent to the owner
-const ownerHtml = ({ name, email, subject, message }) => {
+const ownerInjectedHtml = ({ name, email, subject, message }) => {
   return injectVars(ownerTemplate, {
     name,
     email,
@@ -63,7 +63,7 @@ const ownerHtml = ({ name, email, subject, message }) => {
 };
 
 // The mail that will be sent to the user
-const userHtml = ({ name }) => {
+const userInjectedHtml = ({ name }) => {
   return injectVars(userTemplate, {
     name,
     brand,
@@ -123,7 +123,7 @@ export async function POST(request) {
         `From: ${name} <${email}>\n` +
         `Subject: ${subject}\n\n` +
         `Message:\n${message}\n`,
-      html: ownerHtml({ name, email, subject, message }),
+      html: ownerInjectedHtml({ name, email, subject, message }),
     });
 
     // Send confirmation to the sender
@@ -136,7 +136,7 @@ export async function POST(request) {
         `Hi ${name || ""},\n\n` +
         `Thanks for your message. I will get back to you soon.\n\n` +
         `${process.env.SITE_URL || ""}\n`,
-      html: userHtml({ name }),
+      html: userInjectedHtml({ name }),
     });
 
     await withTimeout(Promise.all([ownerMail, userMail]), 15000);

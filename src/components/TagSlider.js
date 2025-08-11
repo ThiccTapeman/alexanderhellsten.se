@@ -1,7 +1,16 @@
+/*
+ *
+ * Code was written by Alexander Hellstén
+ * Github: https://github.com/ThiccTapeman
+ * Project Github: https://github.com/ThiccTapeman/alexanderhellsten.se
+ *
+ */
+
 import { useState, useRef, useEffect } from "react";
 
 let paused;
 
+// Loops a scrolling value
 function LoopingValue(speed, min = 0, max = 100) {
   const [value, setValue] = useState(0);
   useEffect(() => {
@@ -33,6 +42,7 @@ export default function TagSlider({ content, as, onClick, ...props }) {
 
   const progress = LoopingValue(60, 0, contentWidth);
 
+  // Stops the momentum
   function stopMomentum() {
     if (momentumFrame.current) {
       cancelAnimationFrame(momentumFrame.current);
@@ -40,6 +50,7 @@ export default function TagSlider({ content, as, onClick, ...props }) {
     }
   }
 
+  // Keeps momentum when mouse release
   function startMomentum() {
     function step() {
       if (Math.abs(velocity.current) < 0.01) return;
@@ -99,6 +110,7 @@ export default function TagSlider({ content, as, onClick, ...props }) {
     startMomentum();
   }
 
+  // Wraps the content around making sure it doesnt "escape"
   const totalOffset =
     contentWidth > 0
       ? (((progress + scrollX) % contentWidth) + contentWidth) % contentWidth
@@ -113,16 +125,20 @@ export default function TagSlider({ content, as, onClick, ...props }) {
       onTouchMove={onTouchMove}
       onTouchEnd={onTouchEnd}>
       <div className="flex relative w-max gap-2" style={{ left: -totalOffset }}>
+        {/* Content on the left side to make looping cycle possible */}
         <div className="flex gap-2" ref={contentRef}>
           {content.map((item, i) => (
             <As item={item} key={`content0-${i}`} {...props} />
           ))}
         </div>
+        {/* Main content */}
+
         <div className="flex gap-2">
           {content.map((item, i) => (
             <As item={item} key={`content1-${i}`} {...props} />
           ))}
         </div>
+        {/* Content on the right side to make looping possible */}
         <div className="flex gap-2">
           {content.map((item, i) => (
             <As item={item} key={`content2-${i}`} {...props} />

@@ -1,9 +1,17 @@
+/*
+ *
+ * Code was written by Alexander Hellstén
+ * Github: https://github.com/ThiccTapeman
+ * Project Github: https://github.com/ThiccTapeman/alexanderhellsten.se
+ *
+ */
+
 "use client";
+
 import { usePathname, useRouter } from "next/navigation";
 import { useLoading } from "@/components/LoadingProvider";
 
 import Link from "next/link";
-import { useCallback } from "react";
 
 const FILE_EXT = /\.(pdf|docx?|xlsx?|csv|zip|png|jpe?g|gif|mp4|mp3)$/i;
 

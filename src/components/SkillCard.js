@@ -1,3 +1,11 @@
+/*
+ *
+ * Code was written by Alexander Hellstén
+ * Github: https://github.com/ThiccTapeman
+ * Project Github: https://github.com/ThiccTapeman/alexanderhellsten.se
+ *
+ */
+
 export function SkillCard({ title, skills }) {
   return (
     <div className="p-0 md:p-5 md:px-10 w-full shadow-lg">

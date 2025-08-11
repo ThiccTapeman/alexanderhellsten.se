@@ -8,6 +8,7 @@
 
 import DelayedLink from "./DelayedLink";
 
+// Will make an action button that is unified with the rest of the buttons. Works with both downloads, links, and delayed links
 export default function ActionButton({
   href,
   children,
@@ -21,6 +22,7 @@ export default function ActionButton({
   delay = 0,
   download,
 }) {
+  // Modifies the classes
   let classes = className;
   classes += p + " ";
   classes += w + " ";

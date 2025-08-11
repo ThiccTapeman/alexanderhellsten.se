@@ -1,7 +1,15 @@
-// components/Loader.js
+/*
+ *
+ * Code was written by Alexander Hellstén
+ * Github: https://github.com/ThiccTapeman
+ * Project Github: https://github.com/ThiccTapeman/alexanderhellsten.se
+ *
+ */
+
 import { Bouncy } from "ldrs/react";
 import "ldrs/react/Bouncy.css";
 
+// Loader with a horizontal "curtain" effect
 export default function Loader({ visible }) {
   return (
     <div className="w-screen h-screen fixed left-0 top-0 z-50 flex pointer-events-none">

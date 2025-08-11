@@ -1,9 +1,18 @@
-// src/components/ContactForm.js
+/*
+ *
+ * Code was written by Alexander Hellstén
+ * Github: https://github.com/ThiccTapeman
+ * Project Github: https://github.com/ThiccTapeman/alexanderhellsten.se
+ *
+ */
+
 "use client";
+
 import { Send } from "lucide-react";
 import { useState, useRef, useEffect } from "react";
 
 export default function ContactForm({ debug, initialRemainingMs = 0 }) {
+  // Adds in a debug state.
   const [form, setForm] = useState({
     name: debug ? "Dwayne Johnsson" : "",
     email: debug ? "thicctapeman@gmail.com" : "",
@@ -11,13 +20,14 @@ export default function ContactForm({ debug, initialRemainingMs = 0 }) {
     message: debug ? "Dwayne Johnsson * Dwayne Johnsson" : "",
     website: "",
   });
+
   const [status, setStatus] = useState("idle");
   const [error, setError] = useState("");
   const [remainingMs, setRemainingMs] = useState(initialRemainingMs);
   const abortRef = useRef(null);
 
   useEffect(() => {
-    // live countdown from cookie + initialRemainingMs
+    // Live countdown from cookie
     const readCookieMs = () => {
       const row = document.cookie
         .split("; ")
@@ -36,18 +46,21 @@ export default function ContactForm({ debug, initialRemainingMs = 0 }) {
       });
     };
 
-    // sync immediately, then every second
+    // Sync immediately, then every second
     tick();
     const id = setInterval(tick, 1000);
     return () => clearInterval(id);
   }, []);
 
+  // Update the form to the new values
   const onChange = (e) => {
     const { name, value } = e.target;
     setForm((prev) => ({ ...prev, [name]: value }));
   };
 
   const isEmail = (v) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v.trim());
+
+  // Checks if the message to be sent contains all the content it should
   const valid =
     form.name.trim().length >= 2 &&
     isEmail(form.email) &&
@@ -63,6 +76,7 @@ export default function ContactForm({ debug, initialRemainingMs = 0 }) {
     }
     setStatus("loading");
 
+    // Times the request out
     const controller = new AbortController();
     abortRef.current = controller;
     const t = setTimeout(() => controller.abort(), 16000);
@@ -78,7 +92,7 @@ export default function ContactForm({ debug, initialRemainingMs = 0 }) {
       if (res.ok && data.ok) {
         setStatus("sent");
         setForm({ name: "", email: "", subject: "", message: "", website: "" });
-        // API should set contact_sent=Date.now
+        // API should've set contact_sent=Date.now
         // fallback in case proxy strips Set-Cookie
         if (!document.cookie.includes("contact_sent=")) {
           document.cookie = `contact_sent=${Date.now()}; path=/; max-age=${

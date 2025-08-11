@@ -1,3 +1,13 @@
+/*
+ *
+ * Code was written by Alexander Hellstén
+ * Github: https://github.com/ThiccTapeman
+ * Project Github: https://github.com/ThiccTapeman/alexanderhellsten.se
+ *
+ */
+
+// "/resume"
+
 import Education from "./partials/education";
 import Experiences from "./partials/experiences";
 import Hero from "./partials/hero";

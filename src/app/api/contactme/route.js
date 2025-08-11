@@ -101,6 +101,7 @@ export async function POST(request) {
 
     ensureEnv();
 
+    // Think of it as a mail carrier. It handles sending emails through your SMTP server.
     const transporter = nodemailer.createTransport({
       host: process.env.SMTP_HOST,
       port: Number(process.env.SMTP_PORT),

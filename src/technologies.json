@@ -83,6 +83,24 @@
       "main": true,
       "color": "bg-blue-500",
       "text": "text-white"
+    },
+    {
+      "title": "Python",
+      "main": false,
+      "color": "bg-blue-500",
+      "text": "text-white"
+    },
+    {
+      "title": "Blender",
+      "main": true,
+      "color": "bg-orange-500",
+      "text": "text-black"
+    },
+    {
+      "title": "FreeCAD",
+      "main": true,
+      "color": "bg-red-500",
+      "text": "text-white"
     }
   ]
 }

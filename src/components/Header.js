@@ -39,9 +39,9 @@ export default function Header() {
                     description="Quick overview of me"
                     Icon={House}></HeaderNavigationLink>
                   <HeaderNavigationLink
-                    href="/portfolio"
+                    href="/projects"
                     delay="delay-200"
-                    title="Portfolio"
+                    title="Projects"
                     description="View my latest projects and designs"
                     Icon={Briefcase}></HeaderNavigationLink>
                   <HeaderNavigationLink

@@ -13,7 +13,7 @@ import Experiences from "./partials/experiences";
 import Hero from "./partials/hero";
 
 import Skills from "./partials/skills";
-import Contact from "./partials/contact";
+import Contact from "./partials/readytowork";
 
 export default function Resume() {
   return (

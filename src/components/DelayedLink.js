@@ -51,7 +51,7 @@ export default function DelayedLink({
       <a
         href={href}
         className={className}
-        onClick={isFile ? "" : onClick}
+        onClick={isFile ? null : onClick}
         download={download && isFile ? true : false}
         target={target}
         rel={rel}>

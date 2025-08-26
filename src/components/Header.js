@@ -8,6 +8,7 @@
 
 import { FileText, Briefcase, Mail, House } from "lucide-react";
 import { Menu, MenuButton, MenuItems, MenuItem } from "@headlessui/react";
+import { DyslexicToggleButton } from "./Dyslexic";
 import Logo from "./Logo";
 import HeaderNavigationLink from "./HeaderNavigationLink";
 
@@ -27,8 +28,8 @@ export default function Header() {
             <MenuItems
               transition
               className="group absolute top-9 left-0 w-screen mt-2 shadow-lg bg-white focus:outline-none origin-top transition duration-200 ease-in-out data-closed:-translate-y-1 data-closed:opacity-0 -z-10">
-              <div className="p-3 py-10 flex container mx-auto flex-col gap-3">
-                <div className="flex flex-col gap-3">
+              <div className="p-3 py-10 flex container mx-auto flex-col md:flex-row md:justify-between gap-3">
+                <div className="flex flex-col gap-3 w-full">
                   <h3 className="text-xs text-black/80 font-bold">
                     Quick Links
                   </h3>
@@ -56,6 +57,16 @@ export default function Header() {
                     title="Contact"
                     description="Ways to get in touch with me"
                     Icon={Mail}></HeaderNavigationLink>
+                </div>
+                <div className="flex flex-col gap-3 mt-6 w-full align-middle justify-center">
+                  <h3 className="text-2xl text-black/80 font-bold w-full text-center">
+                    Dyslexic?
+                  </h3>
+                  <p className="text-black/80 w-full text-center md:w-2/3 mx-auto mb-5">
+                    This website uses the OpenDyslexic font to improve
+                    readability for dyslexic users. Toggle it below.
+                  </p>
+                  <DyslexicToggleButton></DyslexicToggleButton>
                 </div>
               </div>
             </MenuItems>

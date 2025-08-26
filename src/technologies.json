@@ -4,29 +4,33 @@
       "title": "JavaScript",
       "main": true,
       "color": "bg-yellow-400",
-      "text": "text-black"
+      "text": "text-black",
+      "level": 95
     },
     {
       "title": "HTML5",
       "main": true,
       "color": "bg-amber-600",
-      "text": "text-white"
+      "text": "text-white",
+      "level": 85
     },
     {
       "title": "CSS3",
       "main": true,
       "color": "bg-blue-500",
-      "text": "text-white"
+      "text": "text-white",
+      "level": 80
     },
     {
       "title": "React",
       "main": true,
       "color": "bg-blue-600",
-      "text": "text-white"
+      "text": "text-white",
+      "level": 90
     },
     {
       "title": "Next.js",
-      "main": false,
+      "main": true,
       "color": "bg-yellow-400",
       "text": "text-black"
     },
@@ -58,7 +62,8 @@
       "title": "Tailwind CSS",
       "main": true,
       "color": "bg-blue-500",
-      "text": "text-white"
+      "text": "text-white",
+      "level": 80
     },
     {
       "title": "Bootstrap",
@@ -74,15 +79,17 @@
     },
     {
       "title": ".NET",
-      "main": false,
+      "main": true,
       "color": "bg-purple-700",
-      "text": "text-white"
+      "text": "text-white",
+      "level": 50
     },
     {
       "title": "C#",
       "main": true,
       "color": "bg-blue-500",
-      "text": "text-white"
+      "text": "text-white",
+      "level": 70
     },
     {
       "title": "Python",
@@ -92,13 +99,13 @@
     },
     {
       "title": "Blender",
-      "main": true,
+      "main": false,
       "color": "bg-orange-500",
       "text": "text-black"
     },
     {
       "title": "FreeCAD",
-      "main": true,
+      "main": false,
       "color": "bg-red-500",
       "text": "text-white"
     }

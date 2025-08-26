@@ -28,7 +28,7 @@ export default function Contact() {
             <h2 className="text-2xl font-bold mb-4">Other ways to connect</h2>
             <div className="w-full rounded-lg bg-zinc-900 p-15 border border-zinc-800 text-base px-5 mb-15">
               <ul className="list-disc pl-5">
-                <li className="mb-1">Aviable for freelance projects</li>
+                <li className="mb-1">Available for freelance projects</li>
                 <li className="mb-1">Open for full-time opportunities</li>
                 <li className="mb-1">Happy to discuss collaborations</li>
               </ul>

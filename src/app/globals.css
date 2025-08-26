@@ -1,5 +1,19 @@
 @import "tailwindcss";
 
+@font-face {
+  font-family: OpenDyslexic;
+  src: url("/fonts/OpenDyslexic-Regular.otf") format("opentype");
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: OpenDyslexic;
+  src: url("/fonts/OpenDyslexic-Bold.otf") format("opentype");
+  font-weight: bold;
+  font-style: normal;
+}
+
 :root {
   --background: #ffffff;
   --foreground: #171717;
@@ -12,6 +26,10 @@
     --background: rgba(31, 31, 31, 255);
     --foreground: #ededed;
   }
+}
+
+.font-dyslexic {
+  font-family: "OpenDyslexic", Arial, Helvetica, sans-serif;
 }
 
 body {

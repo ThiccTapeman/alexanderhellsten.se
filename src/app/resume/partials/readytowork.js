@@ -23,7 +23,7 @@ export default function Contact() {
         <div className="flex flex-col md:flex-row gap-4 justify-center mt-15">
           <ActionButton href={"/contact"} w="w-full md:w-max justify-center">
             <Mail size={15} />
-            Get in Touch
+            Get In Touch
           </ActionButton>
           <ActionButton
             href={"/_Alexander_Hellsten_Resume.pdf"}

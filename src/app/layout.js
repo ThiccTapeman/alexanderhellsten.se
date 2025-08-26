@@ -4,6 +4,7 @@ import "./globals.css";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { LoadingProvider } from "@/components/LoadingProvider";
+import { DyslexicProvider } from "@/components/Dyslexic";
 import Loader from "@/components/Loader"; // Import Loader
 
 const geistSans = Geist({ variable: "--font-geist-sans", subsets: ["latin"] });
@@ -19,9 +20,11 @@ export default function RootLayout({ children }) {
         className={`${geistSans.variable} ${geistMono.variable} antialiased h-screen bg-white`}>
         {/* Loader splash always on top */}
         <LoadingProvider initialDelay={300} betweenDelay={200}>
-          <Header />
-          {children}
-          <Footer />
+          <DyslexicProvider>
+            <Header />
+            {children}
+            <Footer />
+          </DyslexicProvider>
         </LoadingProvider>
       </body>
     </html>

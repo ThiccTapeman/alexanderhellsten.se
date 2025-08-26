@@ -27,7 +27,7 @@ export default function Hero() {
           </div>
           <div className="flex gap-4">
             <CircleCheckBig className="text-yellow-300"></CircleCheckBig>
-            Aviable for new projects
+            Available for new projects
           </div>
         </div>
       </div>

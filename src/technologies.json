@@ -16,7 +16,7 @@
     },
     {
       "title": "CSS3",
-      "main": true,
+      "main": false,
       "color": "bg-blue-500",
       "text": "text-white",
       "level": 80
@@ -40,6 +40,13 @@
       "color": "bg-lime-600",
       "text": "text-white",
       "level": 45
+    },
+    {
+      "title": "Unity",
+      "main": true,
+      "color": "bg-gray-800",
+      "text": "text-white",
+      "level": 85
     },
     {
       "title": "Node.js",

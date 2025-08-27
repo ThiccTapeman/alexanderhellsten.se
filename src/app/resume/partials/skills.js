@@ -20,9 +20,9 @@ export default function Skills() {
           Skills
         </h2>
         <p className="text-center text-xl w-full lg:w-2/3 mx-auto mb-10 md:mb-2 text-white">
-          Here's a visualization of what I&apos;d say are my main skills. These
-          values show where I&apos;ve spent most of my time building, debugging,
-          and improving code.
+          Her&apos;s a visualization of what I&apos;d say are my main skills.
+          These values show where I&apos;ve spent most of my time building,
+          debugging, and improving code.
         </p>
         <p className="text-gray-500 text-xl text-center mb-5">
           (Personal opinion, not based on any tests)

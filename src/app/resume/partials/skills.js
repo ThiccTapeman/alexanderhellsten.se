@@ -20,7 +20,7 @@ export default function Skills() {
           Skills
         </h2>
         <p className="text-center text-xl w-full lg:w-2/3 mx-auto mb-10 md:mb-2 text-white">
-          Her&apos;s a visualization of what I&apos;d say are my main skills.
+          Here&apos;s a visualization of what I&apos;d say are my main skills.
           These values show where I&apos;ve spent most of my time building,
           debugging, and improving code.
         </p>

@@ -6,6 +6,7 @@
  *
  */
 
+import technologies from "../../../technologies.json";
 import ActionButton from "@/components/ActionButton";
 import { InfoCard } from "@/components/InfoCard";
 import LoaderLink from "@/components/DelayedLink";
@@ -47,7 +48,7 @@ export default function Hero() {
             color="shadow-teal-200 bg-teal-200 top-0 right-0"
             textColor="text-black"
             label="Technologies"
-            value="15+"></InfoCard>
+            value={technologies["technologies"].length}></InfoCard>
           <InfoCard
             size={"h-40"}
             color="shadow-pink-500 bg-pink-500 top-30"

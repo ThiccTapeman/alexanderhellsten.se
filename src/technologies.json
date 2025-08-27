@@ -35,6 +35,13 @@
       "text": "text-black"
     },
     {
+      "title": "Vue.js",
+      "main": true,
+      "color": "bg-lime-600",
+      "text": "text-white",
+      "level": 45
+    },
+    {
       "title": "Node.js",
       "main": false,
       "color": "bg-green-700",
@@ -79,7 +86,7 @@
     },
     {
       "title": ".NET",
-      "main": true,
+      "main": false,
       "color": "bg-purple-700",
       "text": "text-white",
       "level": 50

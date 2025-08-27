@@ -19,10 +19,10 @@ export default function Skills() {
         <h2 className="text-white mb-10 text-3xl md:text-4xl font-bold text-center">
           Skills
         </h2>
-        <p className="text-center text-xl w-full lg:w-2/3 mx-auto mb-0.5">
+        <p className="text-center text-xl w-full lg:w-2/3 mx-auto mb-10 md:mb-2 text-white">
           Here's a visualization of what I&apos;d say are my main skills. These
-          levels show where I spend most of my time building, debugging, and
-          improving code.
+          values show where I&apos;ve spent most of my time building, debugging,
+          and improving code.
         </p>
         <p className="text-gray-500 text-xl text-center mb-5">
           (Personal opinion, not based on any tests)
@@ -32,7 +32,7 @@ export default function Skills() {
             <div
               key={tech.title}
               className="bg-black rounded-lg p-6 shadow-md text-center">
-              <h3 className="text-lg font-semibold mb-2 text-left">
+              <h3 className="text-lg font-semibold mb-2 text-left text-white">
                 {tech.title}:
               </h3>
               <div className="w-full bg-white rounded-full overflow-hidden h-3.5">

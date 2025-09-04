@@ -1,6 +1,12 @@
 {
   "technologies": [
     {
+      "title": "Wordpress API",
+      "main": false,
+      "color": "bg-blue-600",
+      "text": "text-white"
+    },
+    {
       "title": "JavaScript",
       "main": true,
       "color": "bg-yellow-400",

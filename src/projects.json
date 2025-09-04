@@ -18,8 +18,8 @@
     },
     {
       "projectName": "Wordpress API Integration",
-      "projectDescription": "Developed a small react application that can edit/remove/add new posts in a wordpress project, via the wordpress public API.",
-      "projectImage": "/projectImages/wordpressAPI.png",
+      "projectDescription": "Application that uses Next.js as frontend and Wordpress as backend, can edit/remove/add new posts in a wordpress project.",
+      "projectImage": "/projectImages/wordpress.alexanderhellsten.se.png",
       "projectDate": "Sept 2025",
       "projectTechnologies": [
         "JavaScript",

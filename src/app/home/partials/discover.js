@@ -20,8 +20,8 @@ export default function Discover() {
         </p>
         <div className="flex flex-col gap-4 lg:flex-row">
           <ProfileLinkCard
-            title="Portfolio"
-            href="/portfolio"
+            title="Projects"
+            href="/projects"
             description="View my latest projects and designs"
             icon={Briefcase}></ProfileLinkCard>
           <ProfileLinkCard

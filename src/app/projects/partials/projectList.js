@@ -137,20 +137,26 @@ export default function ProjectList() {
                     {idx + 1}
                   </div>
                   <div className="flex gap-2 opacity-0 group-hover:opacity-100 transition duration-200">
-                    <ActionButton
-                      href={p.projectHomepage}
-                      secondaryInverted
-                      p="px-3 py-3"
-                      additionalClasses="h-max rounded-xl">
-                      <SquareArrowOutUpRight size={15}></SquareArrowOutUpRight>
-                    </ActionButton>
-                    <ActionButton
-                      href={p.projectGithub}
-                      transparent
-                      p="px-3 py-3"
-                      additionalClasses="h-max rounded-xl">
-                      <Github size={15}></Github>
-                    </ActionButton>
+                    {p.projectHomepage && (
+                      <ActionButton
+                        href={p.projectHomepage}
+                        secondaryInverted
+                        p="px-3 py-3"
+                        target={"_blank"}
+                        additionalClasses="h-max rounded-xl">
+                        <SquareArrowOutUpRight size={15}></SquareArrowOutUpRight>
+                      </ActionButton>
+                    )}
+                    {p.projectGithub && (
+                      <ActionButton
+                        href={p.projectGithub}
+                        transparent
+                        p="px-3 py-3"
+                        additionalClasses="h-max rounded-xl"
+                        target={"_blank"}>
+                        <Github size={15}></Github>
+                      </ActionButton>
+                    )}
                   </div>
                 </div>
                 <div className="p-4">
@@ -217,15 +223,4 @@ export default function ProjectList() {
       </div>
     </section>
   );
-}
-
-function safeFormatDate(d) {
-  if (!d) return "No date";
-  const t = new Date(d);
-  if (Number.isNaN(t.getTime())) return "Invalid date";
-  return t.toLocaleDateString(undefined, {
-    year: "numeric",
-    month: "short",
-    day: "2-digit",
-  });
 }

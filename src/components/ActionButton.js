@@ -17,6 +17,7 @@ export default function ActionButton({
   secondary,
   secondaryInverted,
   transparent,
+  target,
   p = "px-8 py-3",
   w = "w-max",
   delay = 0,
@@ -44,6 +45,7 @@ export default function ActionButton({
       href={href}
       className={classes + " " + additionalClasses}
       delay={delay}
+      target={target}
       download={download}>
       {children}
     </DelayedLink>

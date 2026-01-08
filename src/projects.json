@@ -13,6 +13,7 @@
         "Git",
         "Next.js"
       ],
+      "projectType": "Web Application",
       "projectGithub": "https://github.com/ThiccTapeman/alexanderhellsten.se",
       "projectHomepage": "https://alexanderhellsten.se"
     },
@@ -30,6 +31,7 @@
         "Next.js",
         "Wordpress API"
       ],
+      "projectType": "Web Application",
       "projectGithub": "https://github.com/ThiccTapeman/wordpress-test",
       "projectHomepage": "https://wordpress.alexanderhellsten.se"
     },
@@ -43,8 +45,8 @@
         "Blender",
         "C#"
       ],
-      "projectGithub": "https://github.com/ThiccTapeman/lego-game",
-      "projectHomepage": "https://thicctapeman.itch.io/lego"
+      "projectType": "Game",
+      "projectGithub": "https://github.com/ThiccTapeman/lego-game"
     }
   ]
 }

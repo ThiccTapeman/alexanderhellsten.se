@@ -100,9 +100,8 @@ export default function ProjectList() {
                     <button
                       key={t}
                       onClick={() => toggleTech(t)}
-                      className={`rounded-full px-3 py-1 text-sm ${
-                        colorData.color
-                      } ${colorData.text} ${active ? "ring-2 ring-black" : ""}`}
+                      className={`rounded-full px-3 py-1 text-sm ${colorData.color
+                        } ${colorData.text} ${active ? "ring-2 ring-black" : ""}`}
                       aria-pressed={active}>
                       {t}
                     </button>
@@ -196,7 +195,6 @@ export default function ProjectList() {
                         additionalClasses="justify-center">
                         <SquareArrowOutUpRight
                           size={15}></SquareArrowOutUpRight>
-                        Live
                       </ActionButton>
                     )}
                     {p.projectGithub && (

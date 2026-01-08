@@ -14,7 +14,7 @@
     "@tailwindplus/elements": "^1.0.5",
     "ldrs": "^1.1.7",
     "lucide-react": "^0.536.0",
-    "next": "15.4.2",
+    "next": "^16.1.1",
     "nodemailer": "^7.0.5",
     "react": "19.1.0",
     "react-dom": "19.1.0",

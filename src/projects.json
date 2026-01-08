@@ -32,6 +32,19 @@
       ],
       "projectGithub": "https://github.com/ThiccTapeman/wordpress-test",
       "projectHomepage": "https://wordpress.alexanderhellsten.se"
+    },
+    {
+      "projectName": "Lego Game",
+      "projectDescription": "A 3D physics puzzle game made in Unity where you build the level and guide a rolling ball into the goal by shaping its path and momentum.",
+      "projectImage": "/projectImages/lego-game.png",
+      "projectDate": "Jan 2023",
+      "projectTechnologies": [
+        "Unity",
+        "Blender",
+        "C#"
+      ],
+      "projectGithub": "https://github.com/ThiccTapeman/lego-game",
+      "projectHomepage": "https://thicctapeman.itch.io/lego"
     }
   ]
 }

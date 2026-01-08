@@ -11,7 +11,7 @@ export default function Hero() {
           applications, mobile apps, and innovative digital solutions built with
           modern technologies.
         </p>
-        <div className="flex w-full flex-col md:flex-row gap-10 items-center justify-center">
+        <div className="flex w-full flex-col md:flex-row gap-10 text-white items-center justify-center">
           <div className="flex gap-3 w-max items-center">
             <div className="h-4 aspect-square bg-amber-500 rounded-full"></div>
             <p>{projects.projects.length} projects</p>

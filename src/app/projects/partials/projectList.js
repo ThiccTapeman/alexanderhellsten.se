@@ -209,6 +209,7 @@ export default function ProjectList() {
                         target="_blank"
                         rel="noreferrer"
                         secondary
+                        w={p.projectHomepage ? "" : "w-full"}
                         additionalClasses="py-0 px-1">
                         <Github size={15}></Github>
                         Code

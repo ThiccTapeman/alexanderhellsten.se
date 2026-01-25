@@ -50,7 +50,7 @@
     },
     {
       "projectName": "Mea Culpa",
-      "projectDescription": "A 2D platformer which was created for a gamejam with a duration of 2 days. We were 4 people working on the game. 2 devs, 1 artist, and 1 composer.",
+      "projectDescription": "A 2D platformer which was created for a gamejam with a duration of 2 days. We were 4 people working on the game. 2 developers, 1 artist, and 1 composer.",
       "projectImage": "/projectImages/mea-culpa.png",
       "projectDate": "Jan 9 - Jan 11 2026",
       "projectTechnologies": [
@@ -61,6 +61,20 @@
       "projectType": "Game",
       "projectHomepage": "https://thicctapeman.itch.io/mea-culpa",
       "projectGithub": "https://github.com/ThiccTapeman/jamegam-50"
+    },
+    {
+      "projectName": "Twilight Vail",
+      "projectDescription": "A 2D platformer which was created for a gamejam with a duration of 7 days. We were 5 people working on the game. 2 developers, 1 artist, 1 voice actor, and 1 composer.",
+      "projectImage": "/projectImages/twilight-vail.png",
+      "projectDate": "Jan 18 - Jan 25 2026",
+      "projectTechnologies": [
+        "Unity",
+        "C#",
+        "Git"
+      ],
+      "projectType": "Game",
+      "projectHomepage": "https://thicctapeman.itch.io/twilight-vail",
+      "projectGithub": "https://github.com/ThiccTapeman/jamegam-56"
     }
   ]
 }

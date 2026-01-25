@@ -56,7 +56,8 @@
       "projectTechnologies": [
         "Unity",
         "C#",
-        "Git"
+        "Git",
+        "Aseprite"
       ],
       "projectType": "Game",
       "projectHomepage": "https://thicctapeman.itch.io/mea-culpa",
@@ -65,15 +66,16 @@
     {
       "projectName": "Twilight Vail",
       "projectDescription": "A 2D platformer which was created for a gamejam with a duration of 7 days. We were 5 people working on the game. 2 developers, 1 artist, 1 voice actor, and 1 composer.",
-      "projectImage": "/projectImages/twilight-vail.png",
+      "projectImage": "/projectImages/twilight-vail2.png",
       "projectDate": "Jan 18 - Jan 25 2026",
       "projectTechnologies": [
         "Unity",
         "C#",
-        "Git"
+        "Git",
+        "Aseprite"
       ],
       "projectType": "Game",
-      "projectHomepage": "https://thicctapeman.itch.io/twilight-vail",
+      "projectHomepage": "https://thicctapeman.itch.io/twilight-veil",
       "projectGithub": "https://github.com/ThiccTapeman/jamegam-56"
     }
   ]

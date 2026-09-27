@@ -7,9 +7,9 @@
  */
 
 import ActionButton from "@/components/ActionButton";
-import { Download, Mail } from "lucide-react";
+import { Download, Link, Link2, Link2Icon, Mail, SquareArrowOutUpRight, SquareArrowUpRight } from "lucide-react";
 
-export default function Contact() {
+export default function Contact({ showDownload = true }) {
   return (
     <section className="p-4 bg-black">
       <div className="container mx-auto mt-10 mb-15 text-center">
@@ -21,17 +21,35 @@ export default function Contact() {
           Let&apos;s discuss how we can bring your ideas to life.
         </p>
         <div className="flex flex-col md:flex-row gap-4 justify-center mt-15">
-          <ActionButton href={"/contact"} w="w-full md:w-max justify-center">
-            <Mail size={15} />
-            Get In Touch
-          </ActionButton>
-          <ActionButton
-            href={"/_Alexander_Hellsten_Resume.pdf"}
-            secondary
-            w="w-full md:w-max justify-center">
-            <Download size={15} />
-            Download Resumé
-          </ActionButton>
+
+          {showDownload && (
+            <>
+              <ActionButton href={"/contact"} w="w-full md:w-max justify-center">
+                <Mail size={15} />
+                Get In Touch
+              </ActionButton>
+              <ActionButton
+                href={"/_Alexander_Hellsten_Resume.pdf"}
+                secondary
+                w="w-full md:w-max justify-center">
+                <Download size={15} />
+                Download Resumé
+              </ActionButton>
+            </>
+          )}
+
+          {!showDownload && (
+            <>
+              <ActionButton href="mailto:alexanderhellsten7@gmail.com" w="w-full md:w-max justify-center">
+                <Mail size={15} />
+                Get In Touch
+              </ActionButton>
+              <ActionButton href="https://alexanderhellsten.se" secondary w="w-full md:w-max justify-center">
+                <SquareArrowOutUpRight size={15} />
+                Visit My Website
+              </ActionButton>
+            </>
+          )}
         </div>
       </div>
     </section>

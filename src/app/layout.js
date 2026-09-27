@@ -6,6 +6,7 @@ import Footer from "@/components/Footer";
 import { LoadingProvider } from "@/components/LoadingProvider";
 import { DyslexicProvider } from "@/components/Dyslexic";
 import Loader from "@/components/Loader"; // Import Loader
+import { usePathname } from "next/navigation";
 
 const geistSans = Geist({ variable: "--font-geist-sans", subsets: ["latin"] });
 const geistMono = Geist_Mono({
@@ -14,6 +15,10 @@ const geistMono = Geist_Mono({
 });
 
 export default function RootLayout({ children }) {
+  const pathname = usePathname();
+  const hideChrome =
+    pathname?.startsWith("/resume/view/pdf") ||
+    pathname?.startsWith("/resume/view/printout");
   return (
     <html lang="en">
       <body
@@ -21,9 +26,9 @@ export default function RootLayout({ children }) {
         {/* Loader splash always on top */}
         <LoadingProvider initialDelay={300} betweenDelay={200}>
           <DyslexicProvider>
-            <Header />
+            {!hideChrome && <Header />}
             {children}
-            <Footer />
+            {!hideChrome && <Footer />}
           </DyslexicProvider>
         </LoadingProvider>
       </body>

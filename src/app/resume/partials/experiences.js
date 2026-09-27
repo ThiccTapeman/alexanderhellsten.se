@@ -10,11 +10,11 @@ import { Calendar } from "lucide-react";
 import { parseJsonFile } from "next/dist/build/load-jsconfig";
 import experiences from "../../../experiences.json";
 
-export default function Experiences() {
+export default function Experiences({ inverted = false }) {
   return (
-    <section className="min-h-max p-4 bg-white">
+    <section className={"min-h-max p-4 bg-white " + (inverted ? " md:bg-black md:text-gray-100 " : "text-black")}>
       <div className="container mx-auto mt-10 mb-10">
-        <h2 className="text-black mb-10 text-3xl md:text-4xl font-bold text-center">
+        <h2 className="mb-10 text-3xl md:text-4xl font-bold text-center">
           Experiences
         </h2>
         <div className="">
@@ -22,7 +22,7 @@ export default function Experiences() {
             <div
               key={experience.title}
               className={
-                "p-10 w-full rounded-2xl mb-5 text-black text-xs flex flex-col md:flex-row border-1 border-black/10 hover:shadow-md transition duration-200"
+                "p-10 w-full rounded-2xl mb-5 text-xs flex flex-col md:flex-row border-1 " + (inverted ? "border-white/10 bg-white/5 " : "border-black/10") + " hover:shadow-md transition duration-200"
               }>
               <div className="w-full md:w-3/4 mb-4">
                 <div className="flex md:justify-between md:items-center md:flex-row flex-col-reverse">
@@ -35,7 +35,7 @@ export default function Experiences() {
                     </div>
                   )}
                 </div>
-                <p className="text-lg text-pink-500 w-full">
+                <p className={"text-lg text-pink-500 font-bold " + (inverted ? " opacity-90" : "") + " w-full"}>
                   {experience.company}
                 </p>
                 <div className="flex mb-3 gap-2 pt-1 md:hidden">
@@ -45,7 +45,7 @@ export default function Experiences() {
                 <p className="text-base w-full">{experience.description}</p>
               </div>
               <div className="w-full md:w-1/4 ">
-                <div className="mb-3 gap-2 hidden md:flex">
+                <div className="mb-3 gap-2 hidden md:flex justify-end">
                   <Calendar size={15}></Calendar>
                   {experience.date}
                 </div>
@@ -59,6 +59,6 @@ export default function Experiences() {
           ))}
         </div>
       </div>
-    </section>
+    </section >
   );
 }

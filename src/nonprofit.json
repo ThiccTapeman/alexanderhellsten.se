@@ -1,0 +1,20 @@
+{
+    "nonprofit": [
+        {
+            "title": "Twilight Veil",
+            "company": "Game Jam",
+            "description": "I assembled and led a small team during a game jam, taking a major role in programming and level design while coordinating development, scope, and integration across the project.",
+            "date": "Jan 18 - Jan 25 2026",
+            "current": false,
+            "projectLink": "https://thicctapeman.itch.io/twilight-veil"
+        },
+        {
+            "title": "Mea Culpa",
+            "company": "Game Jam",
+            "description": "I assembled and led the team for this game jam project, designing and implementing core gameplay mechanics while handling level design and overall technical direction.",
+            "date": "Jan 9 - Jan 11 2026",
+            "current": false,
+            "projectLink": "https://thicctapeman.itch.io/mea-culpa"
+        }
+    ]
+}

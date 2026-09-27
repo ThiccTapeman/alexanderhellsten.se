@@ -14,13 +14,15 @@ import Hero from "./partials/hero";
 
 import Skills from "./partials/skills";
 import Contact from "./partials/readytowork";
+import Nonprofit from "./partials/nonprofit";
+import ProjectList from "../projects/partials/projectList";
 
 export default function Resume() {
   return (
     <>
       <Hero></Hero>
       <Experiences></Experiences>
-      <Skills></Skills>
+      <Nonprofit inverted></Nonprofit>
       <Education></Education>
       <Contact></Contact>
     </>

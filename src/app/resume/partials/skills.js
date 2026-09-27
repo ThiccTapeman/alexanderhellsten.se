@@ -24,7 +24,7 @@ export default function Skills() {
           These values show where I&apos;ve spent most of my time building,
           debugging, and improving code.
         </p>
-        <p className="text-gray-500 text-xl text-center mb-5">
+        <p className="text-gray-500 text-xs lg:text-sm text-center mb-5">
           (Personal opinion, not based on any tests)
         </p>
         <div className="bg-black rounded-lg p-6 shadow-md text-center grid grid-cols-1 grid-flow-row-dense md:grid-cols-2 lg:grid-cols-4 gap-6">

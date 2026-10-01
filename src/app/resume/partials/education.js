@@ -7,9 +7,10 @@
  */
 
 import { Calendar } from "lucide-react";
-import educations from "../../../education.json";
+import { getContent } from "@/lib/content";
 
-export default function Education({ inverted = false, showDesctription = true }) {
+export default async function Education({ inverted = false, showDesctription = true }) {
+  const educations = await getContent("education");
   return (
     <section className={"p-4 bg-white " + (inverted ? " md:bg-black md:text-gray-100" : "text-black")}>
       <div className="container mx-auto mt-10 mb-10">
@@ -17,7 +18,7 @@ export default function Education({ inverted = false, showDesctription = true })
           Education
         </h2>
         <div className="flex gap-10 flex-col md:flex-row">
-          {educations["educations"].map((education) => (
+          {educations.map((education) => (
             <div
               key={education.title}
               className={

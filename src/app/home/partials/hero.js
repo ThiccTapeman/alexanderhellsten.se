@@ -6,14 +6,15 @@
  *
  */
 
-import technologies from "../../../technologies.json";
+import { getContent } from "@/lib/content";
 import ActionButton from "@/components/ActionButton";
 import { InfoCard } from "@/components/InfoCard";
 import LoaderLink from "@/components/DelayedLink";
 import { ArrowRight, Download, Mouse } from "lucide-react";
 import DelayedLink from "@/components/DelayedLink";
 
-export default function Hero() {
+export default async function Hero() {
+  const technologies = await getContent("technologies");
   return (
     <section className="min-h-screen h-max md:h-screen p-4 bg-white pt-60 md:pt-0">
       <div className="container mx-auto h-full flex flex-col md:flex-row md:justify-center items-center gap-10 relative">
@@ -48,7 +49,7 @@ export default function Hero() {
             color="shadow-teal-200 bg-teal-200 top-0 right-0"
             textColor="text-black"
             label="Technologies"
-            value={technologies["technologies"].length}></InfoCard>
+            value={technologies.length}></InfoCard>
           <InfoCard
             size={"h-40"}
             color="shadow-pink-500 bg-pink-500 top-30"

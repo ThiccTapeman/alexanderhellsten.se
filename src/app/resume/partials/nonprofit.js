@@ -7,9 +7,10 @@
  */
 
 import { Calendar } from "lucide-react";
-import nonprofit from "../../../nonprofit.json";
+import { getContent } from "@/lib/content";
 
-export default function Nonprofit({ inverted = false }) {
+export default async function Nonprofit({ inverted = false }) {
+  const nonprofit = await getContent("nonprofit");
   return (
     <section className={"min-h-max p-4 bg-white " + (inverted ? " md:bg-black md:text-gray-100" : "text-black")}>
       <div className="container mx-auto mt-10 mb-10">
@@ -17,7 +18,7 @@ export default function Nonprofit({ inverted = false }) {
           Independent Projects
         </h2>
         <div className="flex flex-col gap-5">
-          {nonprofit["nonprofit"].map((item) => (
+          {nonprofit.map((item) => (
             <div
               key={`${item.title}-${item.company}`}
               className={

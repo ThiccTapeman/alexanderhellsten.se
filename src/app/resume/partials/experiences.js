@@ -7,10 +7,11 @@
  */
 
 import { Calendar } from "lucide-react";
-import { parseJsonFile } from "next/dist/build/load-jsconfig";
-import experiences from "../../../experiences.json";
 
-export default function Experiences({ inverted = false }) {
+import { getContent } from "@/lib/content";
+
+export default async function Experiences({ inverted = false }) {
+  const experiences = await getContent("experiences");
   return (
     <section className={"min-h-max p-4 bg-white " + (inverted ? " md:bg-black md:text-gray-100 " : "text-black")}>
       <div className="container mx-auto mt-10 mb-10">
@@ -18,7 +19,7 @@ export default function Experiences({ inverted = false }) {
           Experiences
         </h2>
         <div className="">
-          {experiences["experiences"].map((experience) => (
+          {experiences.map((experience) => (
             <div
               key={experience.title}
               className={

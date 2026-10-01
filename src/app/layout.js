@@ -24,13 +24,13 @@ export default function RootLayout({ children }) {
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased h-screen bg-white`}>
         {/* Loader splash always on top */}
-        <LoadingProvider initialDelay={300} betweenDelay={200}>
+        {pathname === "/admin" || pathname?.startsWith("/admin/") ? children : <LoadingProvider initialDelay={300} betweenDelay={200}>
           <DyslexicProvider>
             {!hideChrome && <Header />}
             {children}
             {!hideChrome && <Footer />}
           </DyslexicProvider>
-        </LoadingProvider>
+        </LoadingProvider>}
       </body>
     </html>
   );

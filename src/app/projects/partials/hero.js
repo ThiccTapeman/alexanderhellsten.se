@@ -1,7 +1,8 @@
-import projects from "../../../projects.json";
-import technologies from "../../../technologies.json";
+import { getContent } from "@/lib/content";
 
-export default function Hero() {
+
+export default async function Hero() {
+  const [projects, technologies] = await Promise.all([getContent("projects"), getContent("technologies")]);
   return (
     <section className="w-full bg-black">
       <div className="container mx-auto pt-40 pb-25 w-full flex flex-col items-center text-center">
@@ -14,11 +15,11 @@ export default function Hero() {
         <div className="flex w-full flex-col md:flex-row gap-10 text-white items-center justify-center">
           <div className="flex gap-3 w-max items-center">
             <div className="h-4 aspect-square bg-amber-500 rounded-full"></div>
-            <p>{projects.projects.length} projects</p>
+            <p>{projects.length} projects</p>
           </div>
           <div className="flex gap-3 w-max items-center">
             <div className="h-4 aspect-square bg-purple-500 rounded-full"></div>
-            <p>{technologies.technologies.length} Technologies</p>
+            <p>{technologies.length} Technologies</p>
           </div>
         </div>
       </div>

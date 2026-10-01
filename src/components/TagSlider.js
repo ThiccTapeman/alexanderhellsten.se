@@ -24,12 +24,9 @@ function LoopingValue(speed, min = 0, max = 100) {
 
 export default function TagSlider({ content, as, onClick, listView = false, ...props }) {
   const As = as;
-  const wrapperRef = useRef(null);
-  const contentRef = useRef(null);
-
   if (listView) {
     return (
-      <div ref={wrapperRef} className="w-full">
+      <div className="w-full">
         <div className="flex flex-wrap gap-2 w-full">
           {content.map((item, i) => (
             <As item={item} key={`content-list-${i}`} {...props} />
@@ -38,6 +35,12 @@ export default function TagSlider({ content, as, onClick, listView = false, ...p
       </div>
     );
   }
+  return <ScrollingTags content={content} as={As} onClick={onClick} {...props} />;
+}
+
+function ScrollingTags({ content, as: As, ...props }) {
+  const wrapperRef = useRef(null);
+  const contentRef = useRef(null);
 
   const [scrollX, setScrollX] = useState(0);
   const dragging = useRef(false);

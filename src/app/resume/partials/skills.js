@@ -1,4 +1,4 @@
-import technologies from "../../../technologies.json";
+import { getContent } from "@/lib/content";
 
 /*
  *
@@ -8,8 +8,9 @@ import technologies from "../../../technologies.json";
  *
  */
 
-export default function Skills() {
-  const mainTechnologies = technologies["technologies"].filter(
+export default async function Skills() {
+  const technologies = await getContent("technologies");
+  const mainTechnologies = technologies.filter(
     (tech) => tech.main
   );
 

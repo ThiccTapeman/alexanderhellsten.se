@@ -111,7 +111,7 @@ export default function ProjectList({ showFilters = true, maxView = -1, showLink
       {/* Controls */}
       {
         showFilters && (
-          <div className="flex flex-col gap-6 text-black">
+          <div className="flex flex-col gap-6 text-black mb-10 container mx-auto p-4">
             <div className="flex flex-wrap items-center gap-10">
               <span className="text-sm font-medium">Filter by project type</span>
               <div className="flex flex-wrap gap-2">
@@ -165,7 +165,7 @@ export default function ProjectList({ showFilters = true, maxView = -1, showLink
       }
 
       {/* List */}
-      <div className="grid gap-4 grid-cols-1 lg:grid-cols-2">
+      <div className="grid gap-4 grid-cols-1 lg:grid-cols-2 p-4">
         {limitedProjects.length === 0 ? (
           <div className="col-span-full rounded-xl border border-dashed p-8 text-center text-sm text-gray-500">
             No projects match your filters

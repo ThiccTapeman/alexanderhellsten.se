@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev --turbopack",
-    "build": "next build",
+    "build": "next build --webpack",
     "start": "next start",
     "lint": "eslint .",
     "test": "node --test tests",
@@ -14,7 +14,7 @@
   },
   "dependencies": {
     "@headlessui/react": "^2.2.7",
-    "@netlify/plugin-nextjs": "^5.12.0",
+    "@netlify/plugin-nextjs": "^5.16.1",
     "@tailwindplus/elements": "^1.0.5",
     "ldrs": "^1.1.7",
     "lucide-react": "^0.536.0",

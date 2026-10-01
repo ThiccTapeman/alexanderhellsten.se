@@ -22,7 +22,12 @@ export async function migrate(client) {
       const checksum = createHash("sha256").update(sql).digest("hex");
       const { rows } = await client.query("SELECT checksum FROM schema_migrations WHERE name = $1", [name]);
       if (rows.length) {
-        if (rows[0].checksum !== checksum) throw new Error(`Applied migration changed: ${name}`);
+        if (rows[0].checksum !== checksum) {
+          const error = new Error(`Applied migration changed: ${name}`);
+          error.code = "MIGRATION_CHECKSUM_MISMATCH";
+          throw error;
+        }
+        if (name === "003-images.sql" && !existingTables.has("media_images")) await execute(sql);
         continue;
       }
       if (name === "002-original-content.sql") {

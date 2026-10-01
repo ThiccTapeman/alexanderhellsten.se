@@ -48,11 +48,22 @@ trusted origin, not a wildcard. Public database-backed pages need a configured,
 database at runtime; there is deliberately no JSON fallback. Tables are initialized
 once per server process; a restart or a manual migration also repairs missing tables.
 
-Automatic initialization requires a database account with CREATE permission on
+When all expected tables and migration records exist, startup performs only a
+read-only schema check. It does not execute DDL or read SQL files. Missing tables
+or pending migrations still trigger automatic setup. Full migration checksum
+validation runs during setup or `npm run db:migrate`. Add new SQL migrations to
+`src/lib/database-schema.mjs`; the tests enforce that the manifest stays current.
+
+Automatic initialization of an incomplete database requires an account with CREATE permission on
 the application's schema and ownership/permissions to apply its migrations and
 read/write its tables and sequences. Use a dedicated database/schema for this app;
 it does not need superuser or role-management permissions. Keep managed database
 backups enabled; deletion in the editor is permanent.
+
+Production builds use `next build --webpack` to avoid the hashed external-package
+references emitted by Turbopack that caused the deployed `pg-…` module-load error.
+Local development still uses Turbopack. PostgreSQL (`pg`) and the native image
+processor (`sharp`) are explicitly kept as server-only external packages.
 
 ### Authentication and crawler protection
 

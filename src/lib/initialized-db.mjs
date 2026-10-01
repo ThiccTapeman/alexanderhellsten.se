@@ -1,10 +1,15 @@
 import { migrate } from "../../scripts/migrations.mjs";
+import { schemaIsCurrent } from "./database-schema.mjs";
 
 export function initializedDatabase(pool) {
   let initialization;
   async function initialize() {
     const client = await pool.connect();
-    try { await migrate(client); }
+    try {
+      // Existing installations need only SELECT permission here. Do not open SQL
+      // files, acquire migration locks, or execute DDL on ordinary cold starts.
+      if (!await schemaIsCurrent(client)) await migrate(client);
+    }
     finally { client.release(); }
   }
 
@@ -15,6 +20,7 @@ export function initializedDatabase(pool) {
       if (!initialization) {
         initialization = initialize().catch((error) => {
           initialization = undefined;
+          console.error("Database initialization failed", { type: error.name, code: error.code || "UNKNOWN" });
           throw error;
         });
       }

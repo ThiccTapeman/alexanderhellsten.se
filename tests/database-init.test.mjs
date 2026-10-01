@@ -1,9 +1,40 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import { PGlite } from "@electric-sql/pglite";
-import { readFile } from "node:fs/promises";
+import { readFile, readdir, mkdtemp, rmdir } from "node:fs/promises";
+import os from "node:os";
+import path from "node:path";
 import { initializedDatabase } from "../src/lib/initialized-db.mjs";
 import { migrate } from "../scripts/migrations.mjs";
+import { requiredMigrations } from "../src/lib/database-schema.mjs";
+
+test("runtime schema contract covers every migration", async () => {
+  const files = (await readdir(new URL("../db/migrations/", import.meta.url))).filter((name) => name.endsWith(".sql")).sort();
+  assert.deepEqual(requiredMigrations, files);
+});
+
+test("an initialized database works with SELECT-only permissions and no packaged SQL files", async () => {
+  const db = new PGlite();
+  const originalDirectory = process.cwd();
+  const emptyDirectory = await mkdtemp(path.join(os.tmpdir(), "portfolio-schema-check-"));
+  const statements = [];
+  const query = (sql, values) => { statements.push(sql); return db.query(sql, values); };
+  try {
+    await migrate(db);
+    await db.query("CREATE ROLE portfolio_reader");
+    await db.query("GRANT USAGE ON SCHEMA public TO portfolio_reader");
+    await db.query("GRANT SELECT ON ALL TABLES IN SCHEMA public TO portfolio_reader");
+    await db.query("SET ROLE portfolio_reader");
+    process.chdir(emptyDirectory);
+    const initialized = initializedDatabase({ query, async connect() { return { query, release() {} }; } });
+    assert.equal((await initialized.query("SELECT count(*)::integer AS count FROM projects")).rows[0].count, 6);
+    assert.ok(statements.every((sql) => sql.startsWith("SELECT ")), "Cold start executed a non-read-only statement");
+  } finally {
+    process.chdir(originalDirectory);
+    await db.close();
+    await rmdir(emptyDirectory);
+  }
+});
 
 test("first concurrent queries initialize an empty database once and preserve subsequent edits", async () => {
   const db = new PGlite();
@@ -30,6 +61,8 @@ test("first concurrent queries initialize an empty database once and preserve su
     // Missing tables are repaired even when migration history already exists.
     await db.query("DROP TABLE admin_rate_limits");
     await initializedDatabase(pool).query("SELECT * FROM admin_rate_limits");
+    await db.query("DROP TABLE media_images");
+    await initializedDatabase(pool).query("SELECT * FROM media_images");
   } finally { await db.close(); }
 });
 

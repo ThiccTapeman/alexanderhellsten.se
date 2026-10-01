@@ -2,6 +2,8 @@ import assert from "node:assert/strict";
 import { spawn } from "node:child_process";
 import { randomBytes } from "node:crypto";
 import { once } from "node:events";
+import { readFile, readdir, access } from "node:fs/promises";
+import path from "node:path";
 import { setTimeout as delay } from "node:timers/promises";
 import { PGlite } from "@electric-sql/pglite";
 import { PGLiteSocketServer } from "@electric-sql/pglite-socket";
@@ -9,6 +11,25 @@ import pg from "pg";
 import { hashPassword } from "../src/lib/auth-core.mjs";
 import { collections } from "../src/lib/content-schema.mjs";
 import sharp from "sharp";
+
+// Catch the external-package packaging regression before starting a server that
+// could otherwise resolve missing deployment files from local node_modules.
+const tracePath = ".next/server/app/page.js.nft.json";
+const trace = JSON.parse(await readFile(tracePath, "utf8"));
+assert.ok(trace.files.some((file) => file.endsWith("node_modules/pg/package.json")), "Postgres is missing from the deployment trace");
+for (const file of trace.files.filter((file) => /node_modules\/pg\/|db\/migrations\//.test(file))) {
+  await access(path.resolve(path.dirname(tracePath), file));
+}
+async function checkServerImports(directory) {
+  for (const entry of await readdir(directory, { withFileTypes: true })) {
+    const filename = path.join(directory, entry.name);
+    if (entry.isDirectory()) await checkServerImports(filename);
+    else if (entry.name.endsWith(".js")) {
+      assert.ok(!/\bpg-[a-f0-9]{16}\b/.test(await readFile(filename, "utf8")), "Production build contains a hashed pg external import");
+    }
+  }
+}
+await checkServerImports(".next/server");
 
 // This fixture never uses DATABASE_URL from your environment or existing data.
 const db = await PGlite.create();

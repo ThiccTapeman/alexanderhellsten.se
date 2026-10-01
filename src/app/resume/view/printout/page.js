@@ -17,6 +17,15 @@ import Contact from "../../partials/readytowork";
 import Projects from "../../partials/projects";
 import Nonprofit from "../../partials/nonprofit";
 
+export const metadata = {
+  title: "Print Résumé | Alexander Hellstén",
+  description:
+    "View a print-friendly version of Alexander Hellstén’s résumé, including software projects, professional experience, education, and contact details.",
+  alternates: {
+    canonical: "https://alexanderhellsten.se/resume",
+  },
+};
+
 export default function Resume() {
   return (
     <>

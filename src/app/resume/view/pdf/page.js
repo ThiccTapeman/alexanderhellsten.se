@@ -18,6 +18,15 @@ import Projects from "../../partials/projects";
 import Divider from "../../partials/divider";
 import Nonprofit from "../../partials/nonprofit";
 
+export const metadata = {
+  title: "PDF Résumé View | Alexander Hellstén",
+  description:
+    "View Alexander Hellstén’s résumé in a PDF-ready layout, with projects, professional experience, education, and contact details.",
+  alternates: {
+    canonical: "https://alexanderhellsten.se/resume",
+  },
+};
+
 export default function Resume() {
   return (
     <>

@@ -23,3 +23,12 @@ export default function Projects() {
     </>
   );
 }
+
+export const metadata = {
+  title: "Projects | Alexander Hellstén",
+  description:
+    "Explore Alexander Hellstén’s software projects, including development details, technologies, and source code",
+  alternates: {
+    canonical: "https://alexanderhellsten.se/projects",
+  },
+};

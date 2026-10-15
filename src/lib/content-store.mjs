@@ -2,6 +2,12 @@ import { collectionConfig } from "./content-schema.mjs";
 
 export function contentStore(db) {
   return {
+    async project(id) {
+      if (!Number.isSafeInteger(id) || id <= 0 || id > 2147483647) return null;
+      const columns = collectionConfig("projects").fields.map(([field]) => `"${field}"`).join(", ");
+      const { rows } = await db.query(`SELECT id, position, version, ${columns} FROM projects WHERE id = $1`, [id]);
+      return rows[0] || null;
+    },
     async list(name) {
       const config = collectionConfig(name);
       const columns = config.fields.map(([field]) => `"${field}"`).join(", ");
@@ -12,7 +18,8 @@ export function contentStore(db) {
       const config = collectionConfig(name);
       const record = config.schema.parse(input);
       const fields = [...config.fields.map(([field]) => field), "position"];
-      const values = fields.map((field) => record[field]);
+      const jsonFields = new Set(config.fields.filter(([, , type]) => type === "json").map(([field]) => field));
+      const values = fields.map((field) => jsonFields.has(field) ? JSON.stringify(record[field]) : record[field]);
       if (id) {
         const assignments = fields.map((field, index) => `"${field}" = $${index + 1}`).join(", ");
         const { rows } = await db.query(`UPDATE "${name}" SET ${assignments}, version = version + 1, updated_at = now() WHERE id = $${values.length + 1} AND version = $${values.length + 2} RETURNING id`, [...values, id, version]);

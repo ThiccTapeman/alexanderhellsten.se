@@ -1,5 +1,6 @@
 import { z } from "zod";
 import { isImageUrl } from "./image-config.mjs";
+import { projectSectionsSchema, independentDetailsSchema } from "./project-details.mjs";
 
 export const backgroundColors = ["bg-blue-600", "bg-yellow-400", "bg-amber-600", "bg-blue-500", "bg-lime-600", "bg-gray-800", "bg-green-700", "bg-blue-300", "bg-lime-500", "bg-purple-500", "bg-green-500", "bg-purple-700", "bg-orange-500", "bg-red-500", "bg-red-700", "bg-orange-400"];
 export const textColors = ["text-white", "text-black"];
@@ -20,9 +21,12 @@ export const collections = {
     ["projectImage", "Image URL", "text"], ["projectDate", "Date", "text"],
     ["projectTechnologies", "Technologies (one per line)", "list"], ["projectType", "Project type", "text"],
     ["projectGithub", "GitHub URL", "url"], ["projectHomepage", "Website URL", "url"],
+    ["independent", "Independent project", "checkbox"], ["showInProjects", "Show in project listing", "checkbox"],
+    ["sections", "Detail page sections", "json"], ["independentDetails", "Independent work details", "json"],
   ], schema: z.object({ projectName: required, projectDescription: description, projectImage: image,
     projectDate: required, projectTechnologies: z.array(required.max(100)).max(50), projectType: required,
-    projectGithub: link, projectHomepage: link, position }).strict() },
+    projectGithub: link, projectHomepage: link, independent: z.boolean().default(false),
+    showInProjects: z.boolean().default(true), sections: projectSectionsSchema, independentDetails: independentDetailsSchema, position }).strict() },
   education: { label: "Education", titleField: "title", fields: [
     ["title", "Title", "text"], ["school", "School", "text"], ["subject", "Subject", "text"],
     ["date", "Date", "text"], ["description", "Description", "textarea"], ["recent", "Most recent", "checkbox"],
@@ -31,10 +35,6 @@ export const collections = {
     ["title", "Title", "text"], ["company", "Company", "text"], ["date", "Date", "text"],
     ["description", "Description", "textarea"], ["current", "Current", "checkbox"],
   ], schema: z.object({ title: required, company: required, date: required, description, current: z.boolean(), position }).strict() },
-  nonprofit: { label: "Independent / nonprofit work", titleField: "title", fields: [
-    ["title", "Title", "text"], ["company", "Organization / event", "text"], ["date", "Date", "text"],
-    ["description", "Description", "textarea"], ["current", "Current", "checkbox"], ["projectLink", "Project URL", "url"],
-  ], schema: z.object({ title: required, company: required, date: required, description, current: z.boolean(), projectLink: link, position }).strict() },
   technologies: { label: "Technologies", titleField: "title", fields: [
     ["title", "Name", "text"], ["main", "Main skill", "checkbox"], ["color", "Badge color", "color"],
     ["text", "Text color", "textColor"], ["level", "Skill level (0–100, optional)", "number"],
@@ -53,5 +53,6 @@ export function emptyRecord(name, position = 0) {
     record[field] = type === "checkbox" ? false : type === "list" ? [] : type === "number" ? null : "";
   }
   if (name === "technologies") Object.assign(record, { color: backgroundColors[0], text: textColors[0] });
+  if (name === "projects") Object.assign(record, { independent: false, showInProjects: true, sections: [], independentDetails: null });
   return record;
 }

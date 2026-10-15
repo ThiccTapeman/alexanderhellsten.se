@@ -90,7 +90,8 @@ test("partial schemas without migration history keep their existing content", as
     await db.exec(schema.slice(0, schema.indexOf("CREATE TABLE education")));
     await db.query('INSERT INTO projects ("projectName", "projectDescription", "projectDate", "projectType") VALUES ($1, $2, $3, $4)', ["Existing project", "Keep this", "2026", "Web"]);
     await migrate(db);
-    assert.equal((await db.query("SELECT * FROM projects")).rows.length, 1);
+    assert.equal((await db.query('SELECT * FROM projects WHERE "showInProjects"')).rows.length, 1);
+    assert.equal((await db.query('SELECT * FROM projects WHERE independent AND NOT "showInProjects"')).rows.length, 2);
     assert.equal((await db.query('SELECT "projectName" FROM projects')).rows[0].projectName, "Existing project");
     assert.equal((await db.query("SELECT * FROM technologies")).rows.length, 23);
     await db.query("DELETE FROM technologies");

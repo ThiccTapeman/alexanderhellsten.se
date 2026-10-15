@@ -8,9 +8,10 @@
 
 import { Calendar } from "lucide-react";
 import { getContent } from "@/lib/content";
+import { independentProjects } from "@/lib/project-details.mjs";
 
 export default async function Nonprofit({ inverted = false }) {
-  const nonprofit = await getContent("nonprofit");
+  const nonprofit = independentProjects(await getContent("projects"));
   return (
     <section className={"min-h-max p-4 bg-white " + (inverted ? " md:bg-black md:text-gray-100" : "text-black")}>
       <div className="container mx-auto mt-10 mb-10">

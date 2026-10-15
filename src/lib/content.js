@@ -9,3 +9,9 @@ export const getContent = cache(async (name) => {
   await connection();
   return contentStore(database()).list(name);
 });
+
+export const getProject = cache(async (id) => {
+  if (!/^[1-9]\d*$/.test(String(id))) return null;
+  await connection();
+  return contentStore(database()).project(Number(id));
+});

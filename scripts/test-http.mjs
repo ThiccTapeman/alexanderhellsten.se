@@ -127,7 +127,17 @@ try {
     assert.equal(list.status, 200);
     const { id: ignoredId, version: ignoredVersion, ...record } = (await list.json()).records[0];
     const titleField = collections[name].titleField;
-    if (name === "projects") record.projectImage = uploaded.url;
+    if (name === "projects") {
+      record.projectImage = uploaded.url;
+      record.independent = true;
+      record.sections = [
+        { id: "story", type: "text", title: "How it started", body: "A unique case study narrative", layout: "split" },
+        { id: "screenshot", type: "image", title: "The interface", body: "", layout: "right", image: { src: uploaded.url, alt: "Interface screenshot", caption: "A working prototype" } },
+        { id: "gallery", type: "gallery", title: "Gallery", body: "", images: [{ src: uploaded.url, alt: "Gallery screenshot", caption: "" }] },
+        { id: "demo", type: "video", title: "Video demo", body: "", src: "https://example.com/demo.mp4", poster: uploaded.url, captions: "https://example.com/demo.vtt", transcript: "A narrated walkthrough" },
+        { id: "features", type: "features", title: "Features", body: "", items: [{ title: "Fast feedback", body: "A feature explanation", image: null }] },
+      ];
+    }
     record[titleField] = `HTTP verification ${name}`;
     record.position = 999;
     const created = await request(`/api/admin/content/${name}`, { authenticated: true, method: "POST", body: { record } });
@@ -144,10 +154,37 @@ try {
     assert.equal(publicPage.status, 200);
     const publicHtml = await publicPage.text();
     assert.ok(publicHtml.includes(record[titleField]), `${name} update missing from public page`);
-    if (name === "projects") assert.ok(publicHtml.includes(uploaded.url), "Uploaded image missing from public project");
+    if (name === "projects") {
+      assert.ok(publicHtml.includes(uploaded.url), "Uploaded image missing from public project");
+      assert.ok(publicHtml.includes(`/projects/view/${row.id}`), "Project card missing detail link");
+      assert.ok(!publicHtml.includes("A unique case study narrative"), "Detail sections leaked into listing payload");
+      const detail = await request(`/projects/view/${row.id}`);
+      assert.equal(detail.status, 200);
+      const html = await detail.text();
+      for (const expected of [record.projectName, "A unique case study narrative", "Interface screenshot", "Gallery screenshot", "A narrated walkthrough", "Fast feedback", "demo.vtt"]) assert.ok(html.includes(expected), `Missing detail content: ${expected}`);
+      for (const route of ["/resume", "/resume/view/pdf", "/resume/view/printout"]) assert.ok((await (await request(route)).text()).includes(record.projectName), `Independent project missing from ${route}`);
+      const invalid = await request("/api/admin/content/projects", { authenticated: true, method: "PUT", body: { id: row.id, version: row.version, record: { ...record, sections: [{ ...record.sections[1], image: { src: "javascript:alert(1)", alt: "Bad", caption: "" } }] } } });
+      assert.equal(invalid.status, 400);
+      // Turning off independent work must update every résumé view.
+      record.independent = false;
+      record.sections = [record.sections[4], record.sections[0]];
+      const reordered = await request("/api/admin/content/projects", { authenticated: true, method: "PUT", body: { id: row.id, version: row.version, record } });
+      assert.equal(reordered.status, 200);
+      row = (await reordered.json()).records.at(-1);
+      const revised = await (await request(`/projects/view/${row.id}`)).text();
+      assert.ok(revised.indexOf('id="section-features"') < revised.indexOf('id="section-story"'));
+      assert.ok(!revised.includes('id="section-gallery"'));
+      assert.ok(!(await (await request("/resume")).text()).includes(record.projectName));
+    }
     const removed = await request(`/api/admin/content/${name}`, { authenticated: true, method: "DELETE", body: { id: row.id, version: row.version } });
     assert.equal(removed.status, 200);
+    if (name === "projects") assert.equal((await request(`/projects/view/${row.id}`)).status, 404);
   }
+  assert.equal((await request("/api/admin/content/nonprofit", { authenticated: true })).status, 404);
+  for (const id of ["invalid", "0", "999999999999999999999999"]) assert.equal((await request(`/projects/view/${id}`)).status, 404);
+  const legacyDetail = await request("/projects/view/1");
+  assert.equal(legacyDetail.status, 200);
+  assert.ok((await legacyDetail.text()).includes("Portfolio"));
   for (const path of ["/", "/projects", "/resume", "/resume/view/pdf", "/resume/view/printout", "/contact"]) {
     const response = await request(path);
     assert.equal(response.status, 200, `${path} failed`);
@@ -173,7 +210,7 @@ try {
   assert.ok(Number(throttled.headers.get("retry-after")) > 0 && Number(throttled.headers.get("retry-after")) <= 60);
   assert.equal(throttled.headers.get("set-cookie"), null);
   assert.match(throttled.headers.get("cache-control"), /no-store/);
-  console.log("HTTP checks passed: crawler denial, CSRF, login, secure cookies, all five editors, image uploads and serving, public updates, logout, SEO routes, and login throttling with spoofed headers.");
+  console.log("HTTP checks passed: authentication, CSRF, all editors, image uploads, modular project pages, independent-work toggles, section ordering, 404s, public updates, SEO routes, and login throttling.");
 } catch (error) {
   console.error(output);
   throw error;

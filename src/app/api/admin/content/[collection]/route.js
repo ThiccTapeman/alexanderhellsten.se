@@ -29,7 +29,7 @@ async function mutate(request, context, method) {
     const session = await requireAdmin();
     if (!await authStore(database()).consumeLimit(`write:${session.user_id}`, 120, 60)) throw new HttpError(429, "Too many changes. Try again shortly.");
     const name = await collectionName(context);
-    const body = await readJson(request);
+    const body = await readJson(request, name === "projects" ? 1048576 : 65536);
     const store = contentStore(database());
     let changed;
     if (method === "POST") {

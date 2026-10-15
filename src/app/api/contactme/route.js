@@ -8,7 +8,6 @@
 
 import { NextResponse } from "next/server";
 import nodemailer from "nodemailer";
-import { readFile } from "fs/promises";
 
 import fs from "node:fs/promises";
 import path from "node:path";
@@ -51,8 +50,8 @@ async function loadTemplate(name) {
 }
 
 // The mail that will be sent to the owner
-const ownerInjectedHtml = ({ name, email, subject, message }) => {
-  return injectVars(loadTemplate("owner"), {
+const ownerInjectedHtml = async ({ name, email, subject, message }) => {
+  return injectVars(await loadTemplate("owner"), {
     name,
     email,
     subject,
@@ -63,8 +62,8 @@ const ownerInjectedHtml = ({ name, email, subject, message }) => {
 };
 
 // The mail that will be sent to the user
-const userInjectedHtml = ({ name }) => {
-  return injectVars(loadTemplate("user"), {
+const userInjectedHtml = async ({ name }) => {
+  return injectVars(await loadTemplate("user"), {
     name,
     brand,
     site_url: process.env.SITE_URL || "#",
@@ -112,6 +111,12 @@ export async function POST(request) {
       socketTimeout: 15000,
     });
 
+    // Resolve both templates before starting either email delivery.
+    const [ownerHtml, userHtml] = await Promise.all([
+      ownerInjectedHtml({ name, email, subject, message }),
+      userInjectedHtml({ name }),
+    ]);
+
     // Send to you
     const ownerMail = transporter.sendMail({
       from: `"${brand} Contact" ${process.env.TO_EMAIL}`,
@@ -123,7 +128,7 @@ export async function POST(request) {
         `From: ${name} <${email}>\n` +
         `Subject: ${subject}\n\n` +
         `Message:\n${message}\n`,
-      html: ownerInjectedHtml({ name, email, subject, message }),
+      html: ownerHtml,
     });
 
     // Send confirmation to the sender
@@ -136,7 +141,7 @@ export async function POST(request) {
         `Hi ${name || ""},\n\n` +
         `Thanks for your message. I will get back to you soon.\n\n` +
         `${process.env.SITE_URL || ""}\n`,
-      html: userInjectedHtml({ name }),
+      html: userHtml,
     });
 
     await withTimeout(Promise.all([ownerMail, userMail]), 15000);

@@ -1,29 +1,127 @@
-<!doctype html>
-<html>
-  <head>
-    <meta charSet="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Thanks for your message</title>
-    <style>
-      body { font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif; background:#f6f6f6; margin:0; padding:24px }
-      .card { max-width:640px; margin:0 auto; background:#ffffff; border-radius:12px; padding:24px; border:1px solid #eee }
-      h1 { font-size:20px; margin:0 0 12px }
-      p { font-size:14px; color:#333; margin:8px 0 }
-      .footer { font-size:12px; color:#666; margin-top:24px }
-      .btn { display:inline-block; background:#111; color:#fff !important; padding:10px 16px; border-radius:8px; text-decoration:none }
-    </style>
-  </head>
-  <body>
-    <div class="card">
-      <h1>Thanks, ${name || "there"}.</h1>
-      <p>Your message has been recieved. I will reply as soon as possible.</p>
-      <p>If you need to add details, reply to this email.</p>
-      <p style="margin-top:16px">
-        <a class="btn" href="${process.env.SITE_URL || "#"}">Visit ${brand}</a>
-      </p>
-      <div class="footer">
-        If you did not send this, you can ignore this email.
-      </div>
-    </div>
-  </body>
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light">
+  <title>Message received</title>
+</head>
+
+<body style="margin:0;padding:0;background-color:#f3f3f3;font-family:Arial,Helvetica,sans-serif;">
+
+  <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="background-color:#f3f3f3;">
+    <tr>
+      <td align="center" style="padding:48px 16px;">
+
+        <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%"
+          style="max-width:600px;background-color:#171717;border-radius:16px;overflow:hidden;">
+
+          <!-- Accent bar -->
+          <tr>
+            <td style="height:5px;background-color:#fde047;font-size:0;line-height:0;">&nbsp;</td>
+          </tr>
+
+          <!-- Header -->
+          <tr>
+            <td style="padding:36px 40px 20px;">
+              <p
+                style="margin:0;color:#fde047;font-size:12px;font-weight:700;letter-spacing:2px;text-transform:uppercase;">
+                First contact made
+              </p>
+            </td>
+          </tr>
+
+          <!-- Content -->
+          <tr>
+            <td style="padding:12px 40px 36px;">
+
+              <!-- Status indicator -->
+              <table role="presentation" cellpadding="0" cellspacing="0" border="0">
+                <tr>
+                  <td
+                    style="background-color:#37351f;border:1px solid #68602a;border-radius:20px;padding:8px 12px;color:#fde047;font-size:12px;font-weight:600;">
+                    &#10003; Message received
+                  </td>
+                </tr>
+              </table>
+
+              <h1
+                style="margin:28px 0 16px;color:#ffffff;font-size:32px;line-height:1.2;font-weight:700;letter-spacing:-1px;">
+                Thanks for reaching out<span style="color:#fde047;">.</span>
+              </h1>
+
+              <p style="margin:0 0 20px;color:#eeeeee;font-size:16px;line-height:1.7;">
+                Hi {{name}},
+              </p>
+
+              <p style="margin:0 0 20px;color:#bcbcbc;font-size:15px;line-height:1.8;">
+                Thanks for getting in touch! I've successfully received your message and will get back to you as soon as
+                I can.
+              </p>
+
+              <p style="margin:0 0 30px;color:#bcbcbc;font-size:15px;line-height:1.8;">
+                In the meantime, feel free to explore my work. If there's anything else you'd like to add, simply reply
+                to this email.
+              </p>
+
+              <!-- CTA -->
+              <table role="presentation" cellpadding="0" cellspacing="0" border="0">
+                <tr>
+                  <td style="border-radius:8px;background-color:#fde047;">
+                    <a href="{{site_url}}" target="_blank"
+                      style="display:inline-block;padding:15px 26px;color:#000000;font-size:14px;font-weight:700;text-decoration:none;">
+                      Explore my portfolio &#8599;
+                    </a>
+                  </td>
+                </tr>
+              </table>
+
+            </td>
+          </tr>
+
+          <!-- Divider -->
+          <tr>
+            <td style="padding:0 40px;">
+              <div style="height:1px;background-color:#333333;"></div>
+            </td>
+          </tr>
+
+          <!-- Signature -->
+          <tr>
+            <td style="padding:28px 40px 36px;">
+              <p style="margin:0 0 8px;color:#aaaaaa;font-size:13px;line-height:1.6;">
+                Talk soon,
+              </p>
+              <p style="margin:0;color:#ffffff;font-size:16px;font-weight:700;">
+                Alexander Hellstén
+              </p>
+              <p style="margin:6px 0 0;color:#fde047;font-size:12px;">
+                Developer &amp; Designer
+              </p>
+            </td>
+          </tr>
+
+        </table>
+
+        <!-- External footer -->
+        <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="max-width:600px;">
+          <tr>
+            <td align="center" style="padding:24px 16px;">
+              <p style="margin:0 0 8px;color:#888888;font-size:12px;line-height:1.6;">
+                This is an automated confirmation of your contact form submission.
+              </p>
+              <p style="margin:0;color:#999999;font-size:12px;line-height:1.6;">
+                If you didn't submit a message, you can safely ignore this email.
+              </p>
+            </td>
+          </tr>
+        </table>
+
+      </td>
+    </tr>
+  </table>
+
+</body>
+
 </html>

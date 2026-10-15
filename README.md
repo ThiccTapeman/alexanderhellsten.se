@@ -9,8 +9,9 @@ Visit at: alexanderhellsten.se
 ## Portfolio database and admin
 
 `/admin` manages projects (including independent work), education, experience, and
-technologies. Public pages read from
-the database on each request, so saved changes do not require rebuilding the site.
+technologies. Public content is cached for five minutes, and successful admin
+changes expire the affected cache immediately, so the next request sees saved
+changes without rebuilding the site. Admin reads and authentication are never cached.
 The PDF download in `public/` is still a static file; the browser's résumé PDF and
 print views read the database.
 

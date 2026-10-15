@@ -1,6 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
+import Image from "next/image";
 import Link from "next/link";
 
 
@@ -178,9 +179,13 @@ export default function ProjectList({ portfolioItems, technologies, showFilters 
             <article
               key={`${p.projectName}-${idx}`}
               className="group relative rounded-2xl border overflow-hidden transition hover:shadow-md border-black/10">
-              <img
-                className="w-full h-60 object-center object-cover"
-                alt={p.projectName} src={p.projectImage || undefined}></img>
+              <div className="relative w-full h-60 bg-gray-100">
+                {p.projectImage && <Image fill
+                  className="object-center object-cover"
+                  sizes="(min-width: 1024px) 50vw, 100vw"
+                  unoptimized={!p.projectImage.startsWith("/")}
+                  alt={p.projectName} src={p.projectImage} />}
+              </div>
               <div className="flex justify-between w-full top-0 absolute p-4">
                 <div className="w-12 aspect-square flex font-bold justify-center items-center text-black bg-yellow-300  rounded-full">
                   {idx + 1}
@@ -190,9 +195,9 @@ export default function ProjectList({ portfolioItems, technologies, showFilters 
                     <ActionButton
                       href={p.projectHomepage}
                       secondaryInverted
-                      p="px-3 py-3"
                       target={"_blank"}
-                      additionalClasses="h-max rounded-xl">
+                      additionalClasses="h-max rounded-xl"
+                      p="px-3 py-3">
                       <SquareArrowOutUpRight size={15}></SquareArrowOutUpRight>
                     </ActionButton>
                   )}
@@ -200,9 +205,9 @@ export default function ProjectList({ portfolioItems, technologies, showFilters 
                     <ActionButton
                       href={p.projectGithub}
                       transparent
-                      p="px-3 py-3"
                       additionalClasses="h-max rounded-xl"
-                      target={"_blank"}>
+                      target={"_blank"}
+                      p="px-3 py-3">
                       <Github size={15}></Github>
                     </ActionButton>
                   )}
@@ -268,7 +273,7 @@ export default function ProjectList({ portfolioItems, technologies, showFilters 
                         w="flex-[3] min-w-0"
                         p="px-2 py-3"
                         additionalClasses="justify-center">
-                        Article
+                        Read Article
                       </ActionButton>
                     )}
                     {p.projectHomepage && (
@@ -278,10 +283,11 @@ export default function ProjectList({ portfolioItems, technologies, showFilters 
                         rel="noreferrer"
                         w={hasArticle ? "flex-1 min-w-0" : "w-full"}
                         p={hasArticle ? "px-2 py-3" : "px-8 py-3"}
-                        additionalClasses="justify-center">
+                        additionalClasses="justify-center"
+                        {...(hasArticle ? { secondaryInverted: true } : {  })}>
                         <SquareArrowOutUpRight
                           size={15} className={hasArticle ? "hidden sm:block shrink-0" : "shrink-0"}></SquareArrowOutUpRight>
-                        Live
+                        Visit
                       </ActionButton>
                     )}
                     {p.projectGithub && (

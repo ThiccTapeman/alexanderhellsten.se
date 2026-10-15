@@ -69,7 +69,9 @@ try {
   // The real production application must bootstrap the entirely empty database.
   const firstPage = await request("/projects");
   assert.equal(firstPage.status, 200);
-  assert.ok((await firstPage.text()).includes("Backpack Keybinds"));
+  const initialProjectsHtml = await firstPage.text();
+  assert.ok(initialProjectsHtml.includes("Backpack Keybinds"));
+  assert.ok(!/Article<\/a>/.test(initialProjectsHtml), "Projects without detail content must not show an Article button");
   fixturePool = new pg.Pool({ connectionString: "postgresql://postgres:postgres@127.0.0.1:15439/postgres", max: 1 });
   await fixturePool.query("INSERT INTO admin_users (username, password_hash) VALUES ($1, $2)", ["test-admin", await hashPassword(password)]);
 
@@ -157,6 +159,7 @@ try {
     if (name === "projects") {
       assert.ok(publicHtml.includes(uploaded.url), "Uploaded image missing from public project");
       assert.ok(publicHtml.includes(`/projects/view/${row.id}`), "Project card missing detail link");
+      assert.match(publicHtml, /Article<\/a>/, "Projects with detail content must show an Article button");
       assert.ok(!publicHtml.includes("A unique case study narrative"), "Detail sections leaked into listing payload");
       const detail = await request(`/projects/view/${row.id}`);
       assert.equal(detail.status, 200);
@@ -178,6 +181,7 @@ try {
     }
     const removed = await request(`/api/admin/content/${name}`, { authenticated: true, method: "DELETE", body: { id: row.id, version: row.version } });
     assert.equal(removed.status, 200);
+    assert.ok(!(await (await request(page)).text()).includes(record[titleField]), `${name} deletion remained in the public cache`);
     if (name === "projects") assert.equal((await request(`/projects/view/${row.id}`)).status, 404);
   }
   assert.equal((await request("/api/admin/content/nonprofit", { authenticated: true })).status, 404);
@@ -191,6 +195,14 @@ try {
     assert.match(await response.text(), /<title>/);
   }
   const robots = await (await request("/robots.txt")).text();
+  const homeHtml = await (await request("/")).text();
+  assert.ok(homeHtml.includes("scale-y-0"), "The initial loading curtain must be hidden in server HTML");
+  assert.ok(!homeHtml.includes("geist"), "Unused Geist fonts should not be shipped");
+  const font = await request("/fonts/OpenDyslexic-Regular.otf");
+  assert.match(font.headers.get("cache-control"), /max-age=86400/);
+  const resizedImage = await request(`/_next/image?url=${encodeURIComponent(uploaded.url)}&w=640&q=75`, { headers: { Accept: "image/webp" } });
+  assert.equal(resizedImage.status, 200, "Uploaded project images must support Next image optimization");
+  assert.match(resizedImage.headers.get("content-type"), /image\//);
   assert.match(robots, /Disallow: \/admin/);
   assert.ok(!(await (await request("/sitemap.xml")).text()).includes("/admin"));
   assert.equal((await request("/api/admin/logout", { authenticated: true, method: "POST", body: {} })).status, 200);

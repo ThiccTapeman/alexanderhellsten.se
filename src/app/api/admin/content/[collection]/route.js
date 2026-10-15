@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { revalidateTag } from "next/cache";
 import { database } from "@/lib/db";
 import { contentStore } from "@/lib/content-store.mjs";
 import { collections } from "@/lib/content-schema.mjs";
@@ -43,6 +44,7 @@ async function mutate(request, context, method) {
       changed = await store.remove(name, id, version);
     }
     if (!changed) throw new HttpError(409, "This entry changed in another session. Reload the list before editing again.");
+    revalidateTag(`content:${name}`, { expire: 0 });
     return adminJson({ records: await store.list(name) });
   } catch (error) { return adminError(error); }
 }

@@ -18,12 +18,12 @@ before(async () => {
 after(async () => { await db?.close(); });
 
 test("migrations preserve all original content and do not reset later edits", async () => {
-  for (const [name, count] of Object.entries({ projects: 6, education: 2, experiences: 2, nonprofit: 2, technologies: 23 })) {
+  for (const [name, count] of Object.entries({ projects: 6, education: 2, experiences: 2, technologies: 23 })) {
     const records = await content.list(name);
     assert.equal(records.length, count);
     for (const { id, version, ...record } of records) {
       assert.ok(id > 0);
-      assert.equal(version, 1);
+      assert.equal(version, name === "projects" && record.independent ? 2 : 1);
       collections[name].schema.parse(record);
     }
   }

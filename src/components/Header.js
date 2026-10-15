@@ -6,6 +6,8 @@
  *
  */
 
+"use client";
+
 import { FileText, Briefcase, Mail, House } from "lucide-react";
 import { Menu, MenuButton, MenuItems, MenuItem } from "@headlessui/react";
 import { DyslexicToggleButton } from "./Dyslexic";

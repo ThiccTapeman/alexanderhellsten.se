@@ -6,6 +6,8 @@
  *
  */
 
+"use client";
+
 import { createContext, useContext, useState, useEffect, useRef } from "react";
 import { usePathname } from "next/navigation";
 import Loader from "@/components/Loader";
@@ -19,11 +21,11 @@ const LoadingCtx = createContext({
 // Handles when to show the loader.
 export function LoadingProvider({
   children,
-  initialDelay = 800,
+  initialDelay = 0,
   betweenDelay = 800,
 }) {
   const pathname = usePathname();
-  const [visible, setVisible] = useState(true);
+  const [visible, setVisible] = useState(initialDelay > 0);
   const timerRef = useRef(null);
   const firstRouteRef = useRef(true);
 

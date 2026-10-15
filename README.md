@@ -8,9 +8,10 @@ Visit at: alexanderhellsten.se
 
 ## Portfolio database and admin
 
-`/admin` manages projects, education, experience, independent/nonprofit work, and
-technologies. Each group has its own PostgreSQL table. Public pages read from
-the database on each request, so saved changes do not require rebuilding the site.
+`/admin` manages projects (including independent work), education, experience, and
+technologies. Public content is cached for five minutes, and successful admin
+changes expire the affected cache immediately, so the next request sees saved
+changes without rebuilding the site. Admin reads and authentication are never cached.
 The PDF download in `public/` is still a static file; the browser's résumé PDF and
 print views read the database.
 
@@ -120,6 +121,51 @@ renaming a technology does not automatically rename labels on existing projects.
 Display order applies to résumé sections and technologies; the public project list
 retains its existing date/name sorting and filters.
 
+### Project detail pages and independent work
+
+Each project has a page at `/projects/view/[id]`. Click its title in the existing
+project listing, or use **View saved page** in the project editor. Cards retain
+their existing layout, filtering, sorting, and external links. Projects without
+detail sections still have a page using their existing cover, summary, date,
+technologies, and links.
+
+The project editor groups **Project basics**, **Cover & links**, **Detail page**,
+and **Advanced settings & résumé wording**. Add, remove, collapse, and reorder
+detail sections with the editor controls; save the project to publish changes.
+Supported sections are text (full width or split), images/diagrams (full width,
+left, or right), image galleries, video demos, and feature highlights with optional
+images. Headings and content are customizable; no prescribed sections are required.
+Images reuse the existing upload system and require descriptive alt text.
+Videos use direct HTTPS MP4/WebM URLs, an optional poster, an optional English
+WebVTT captions URL, and a transcript/visual description. Videos do not autoplay;
+video hosting and uploads are not provided by this editor. Caption hosts must
+allow cross-origin requests. Content is plain text, not raw HTML.
+
+Ordered sections are stored as JSONB on the existing `projects` table, validated
+through the existing admin API, and saved with the existing version conflict
+checks. Limits are 30 sections per project, 12 images/highlights per section, and
+a 1 MB project request. To add a future section type, extend
+`src/lib/project-details.mjs`, the project editor, and the public section renderer;
+the database structure does not need to change.
+
+The **Independent project** checkbox controls inclusion in the résumé and its
+browser print/PDF views. By default those views reuse project information.
+Optional résumé overrides preserve a different title, organization, description,
+date, URL, current status, or ordering without maintaining a separate entry.
+
+Migration `004-project-details.sql` matches legacy independent work to projects
+by website URL or name and preserves the original résumé wording and order.
+Unmatched entries become independent projects with **Show in the project listing**
+off, preserving the existing list. The old `nonprofit` table remains as an archive
+but is no longer edited or read by the application. Unchecking independent work
+does not erase its résumé overrides. Listing visibility is not a privacy control:
+all detail URLs remain public.
+
+Deploy the updated application normally and restart any running local server.
+The existing initialization applies the migration transactionally on the first
+database request; `npm run db:migrate` can also apply it explicitly. Implementation
+tests use disposable databases, not the live portfolio database.
+
 ### Verification
 
 `npm test` runs migrations, CRUD, conflict, input-validation, password, session,
@@ -130,4 +176,6 @@ After `npm run build`, `npm run test:http` starts a disposable database and a lo
 production server on ports 15439 and 3107. It checks unauthenticated crawler
 requests, login/CSRF/cookie headers, CRUD for every collection, public page updates,
 logout, robots.txt and sitemap.xml, then shuts both servers down. No production
-credentials or data are used.
+credentials or data are used. Project tests also cover legacy migration, modular
+section round-trips and reordering, invalid media, missing project URLs, and
+independent-project updates across résumé views.

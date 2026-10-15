@@ -1,6 +1,6 @@
 // Update this contract when adding a migration. A test compares it with the SQL
 // directory so a new migration cannot silently be skipped by runtime startup.
-export const requiredMigrations = ["001-schema.sql", "002-original-content.sql", "003-images.sql"];
+export const requiredMigrations = ["001-schema.sql", "002-original-content.sql", "003-images.sql", "004-project-details.sql"];
 export const requiredTables = [
   "schema_migrations", "projects", "education", "experiences", "nonprofit",
   "technologies", "admin_users", "admin_sessions", "admin_rate_limits", "media_images",

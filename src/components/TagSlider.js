@@ -1,165 +1,95 @@
-/*
- *
- * Code was written by Alexander Hellstén
- * Github: https://github.com/ThiccTapeman
- * Project Github: https://github.com/ThiccTapeman/alexanderhellsten.se
- *
- */
+"use client";
 
-import { useState, useRef, useEffect } from "react";
+import { useEffect, useRef } from "react";
 
-let paused;
-
-// Loops a scrolling value
-function LoopingValue(speed, min = 0, max = 100) {
-  const [value, setValue] = useState(0);
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setValue((prev) => (paused ? prev : prev >= max ? min : prev + 1));
-    }, 1000 / speed);
-    return () => clearInterval(interval);
-  }, [speed, min, max]);
-  return value;
-}
-
-export default function TagSlider({ content, as, onClick, listView = false, ...props }) {
-  const As = as;
-  if (listView) {
-    return (
-      <div className="w-full">
-        <div className="flex flex-wrap gap-2 w-full">
-          {content.map((item, i) => (
-            <As item={item} key={`content-list-${i}`} {...props} />
-          ))}
-        </div>
-      </div>
-    );
-  }
-  return <ScrollingTags content={content} as={As} onClick={onClick} {...props} />;
+export default function TagSlider({ content, as: As, listView = false, ...props }) {
+  if (listView) return <div className="w-full"><div className="flex flex-wrap gap-2 w-full">{content.map((item, i) => <As item={item} key={i} {...props} />)}</div></div>;
+  return <ScrollingTags content={content} as={As} {...props} />;
 }
 
 function ScrollingTags({ content, as: As, ...props }) {
   const wrapperRef = useRef(null);
+  const trackRef = useRef(null);
   const contentRef = useRef(null);
 
-  const [scrollX, setScrollX] = useState(0);
-  const dragging = useRef(false);
-  const lastX = useRef(0);
-  const velocity = useRef(0);
-  const momentumFrame = useRef(null);
-
-  const [contentWidth, setContentWidth] = useState(0);
   useEffect(() => {
-    if (contentRef.current) {
-      setContentWidth(contentRef.current.offsetWidth);
-    }
+    const wrapper = wrapperRef.current;
+    const track = trackRef.current;
+    const group = contentRef.current;
+    const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+    let animation, width = 0, duration = 0, pointer = null, lastX = 0, velocity = 0, frame;
+    let inView = false;
+    const syncPlayback = () => {
+      if (!animation) return;
+      if (inView && !document.hidden && !reducedMotion.matches && pointer === null && !frame) animation.play();
+      else animation.pause();
+    };
+    const resize = () => {
+      const nextWidth = group.getBoundingClientRect().width + 8;
+      if (nextWidth === width || nextWidth <= 8) return;
+      const time = Number(animation?.currentTime || 0);
+      animation?.cancel();
+      width = nextWidth;
+      duration = width / 60 * 1000;
+      animation = track.animate([{ transform: "translateX(0)" }, { transform: "translateX(-" + width + "px)" }], { duration, iterations: Infinity, easing: "linear" });
+      animation.currentTime = time % duration;
+      syncPlayback();
+    };
+    const shift = (pixels) => {
+      if (!animation) return;
+      const time = Number(animation.currentTime || 0) - pixels / 60 * 1000;
+      animation.currentTime = ((time % duration) + duration) % duration;
+    };
+    const stopMomentum = () => { cancelAnimationFrame(frame); frame = undefined; };
+    const down = (event) => {
+      if (event.button !== 0) return;
+      stopMomentum(); pointer = event.pointerId; lastX = event.clientX; velocity = 0;
+      wrapper.setPointerCapture(pointer); syncPlayback();
+    };
+    const move = (event) => {
+      if (event.pointerId !== pointer) return;
+      velocity = event.clientX - lastX; lastX = event.clientX; shift(velocity);
+    };
+    const up = (event) => {
+      if (event.pointerId !== pointer) return;
+      pointer = null;
+      if (event.type === "pointercancel" || reducedMotion.matches) { syncPlayback(); return; }
+      let previous = performance.now();
+      const step = (now) => {
+        const elapsed = Math.min(32, now - previous) / (1000 / 60); previous = now;
+        shift(velocity * elapsed); velocity *= Math.pow(0.95, elapsed);
+        if (Math.abs(velocity) > 0.1 && inView && !document.hidden) frame = requestAnimationFrame(step);
+        else { frame = undefined; syncPlayback(); }
+      };
+      frame = requestAnimationFrame(step);
+    };
+    const observer = new ResizeObserver(resize);
+    observer.observe(group);
+    const visibility = new IntersectionObserver(([entry]) => { inView = entry.isIntersecting; syncPlayback(); });
+    visibility.observe(wrapper);
+    document.addEventListener("visibilitychange", syncPlayback);
+    reducedMotion.addEventListener("change", syncPlayback);
+    wrapper.addEventListener("pointerdown", down);
+    wrapper.addEventListener("pointermove", move);
+    wrapper.addEventListener("pointerup", up);
+    wrapper.addEventListener("pointercancel", up);
+    wrapper.addEventListener("lostpointercapture", up);
+    return () => {
+      stopMomentum(); animation?.cancel(); observer.disconnect(); visibility.disconnect();
+      document.removeEventListener("visibilitychange", syncPlayback);
+      reducedMotion.removeEventListener("change", syncPlayback);
+      wrapper.removeEventListener("pointerdown", down);
+      wrapper.removeEventListener("pointermove", move);
+      wrapper.removeEventListener("pointerup", up);
+      wrapper.removeEventListener("pointercancel", up);
+      wrapper.removeEventListener("lostpointercapture", up);
+    };
   }, [content]);
 
-  const progress = LoopingValue(60, 0, contentWidth);
-
-  // Stops the momentum
-  function stopMomentum() {
-    if (momentumFrame.current) {
-      cancelAnimationFrame(momentumFrame.current);
-      momentumFrame.current = null;
-    }
-  }
-
-  // Keeps momentum when mouse release
-  function startMomentum() {
-    function step() {
-      if (Math.abs(velocity.current) < 0.01) return;
-      setScrollX((x) => x - velocity.current);
-      velocity.current *= 0.95; // friction
-      momentumFrame.current = requestAnimationFrame(step);
-    }
-    step();
-  }
-
-  function onMouseDown(e) {
-    dragging.current = true;
-    lastX.current = e.clientX;
-    paused = true;
-    stopMomentum();
-    document.body.style.userSelect = "none";
-  }
-  function onMouseMove(e) {
-    if (!dragging.current) return;
-    const delta = e.clientX - lastX.current;
-    lastX.current = e.clientX;
-    setScrollX((x) => x - delta);
-    velocity.current = delta;
-  }
-  function onMouseUp() {
-    dragging.current = false;
-    paused = false;
-    document.body.style.userSelect = "";
-    startMomentum();
-  }
-
-  useEffect(() => {
-    window.addEventListener("mousemove", onMouseMove);
-    window.addEventListener("mouseup", onMouseUp);
-    return () => {
-      window.removeEventListener("mousemove", onMouseMove);
-      window.removeEventListener("mouseup", onMouseUp);
-    };
-  }, []);
-
-  function onTouchStart(e) {
-    dragging.current = true;
-    paused = true;
-    lastX.current = e.touches[0].clientX;
-    stopMomentum();
-  }
-  function onTouchMove(e) {
-    if (!dragging.current) return;
-    const delta = e.touches[0].clientX - lastX.current;
-    lastX.current = e.touches[0].clientX;
-    setScrollX((x) => x - delta);
-    velocity.current = delta;
-  }
-  function onTouchEnd() {
-    dragging.current = false;
-    paused = false;
-    startMomentum();
-  }
-
-  // Wraps the content around making sure it doesnt "escape"
-  const totalOffset =
-    contentWidth > 0
-      ? (((progress + scrollX) % contentWidth) + contentWidth) % contentWidth
-      : 0;
-
-  return (
-    <div
-      ref={wrapperRef}
-      className="w-full overflow-hidden h-max cursor-grab select-none"
-      onMouseDown={onMouseDown}
-      onTouchStart={onTouchStart}
-      onTouchMove={onTouchMove}
-      onTouchEnd={onTouchEnd}>
-      <div className="flex relative w-max gap-2" style={{ left: -totalOffset }}>
-        {/* Content on the left side to make looping cycle possible */}
-        <div className="flex gap-2" ref={contentRef}>
-          {content.map((item, i) => (
-            <As item={item} key={`content0-${i}`} {...props} />
-          ))}
-        </div>
-        {/* Main content */}
-
-        <div className="flex gap-2">
-          {content.map((item, i) => (
-            <As item={item} key={`content1-${i}`} {...props} />
-          ))}
-        </div>
-        {/* Content on the right side to make looping possible */}
-        <div className="flex gap-2">
-          {content.map((item, i) => (
-            <As item={item} key={`content2-${i}`} {...props} />
-          ))}
-        </div>
-      </div>
+  return <div ref={wrapperRef} className="w-full overflow-hidden cursor-grab active:cursor-grabbing select-none touch-pan-y">
+    <div ref={trackRef} className="flex w-max gap-2">
+      <div ref={contentRef} className="flex gap-2 shrink-0">{content.map((item, i) => <As item={item} key={i} {...props} />)}</div>
+      {[1, 2].map((copy) => <div key={copy} aria-hidden="true" className="flex gap-2 shrink-0">{content.map((item, i) => <As item={item} key={i} {...props} />)}</div>)}
     </div>
-  );
+  </div>;
 }

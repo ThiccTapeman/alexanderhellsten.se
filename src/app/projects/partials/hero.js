@@ -15,7 +15,7 @@ export default async function Hero() {
         <div className="flex w-full flex-col md:flex-row gap-10 text-white items-center justify-center">
           <div className="flex gap-3 w-max items-center">
             <div className="h-4 aspect-square bg-amber-500 rounded-full"></div>
-            <p>{projects.length} projects</p>
+            <p>{projects.filter((project) => project.showInProjects).length} projects</p>
           </div>
           <div className="flex gap-3 w-max items-center">
             <div className="h-4 aspect-square bg-purple-500 rounded-full"></div>

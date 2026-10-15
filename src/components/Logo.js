@@ -14,6 +14,7 @@ import DelayedLink from "./DelayedLink";
 const leckerliOne = Leckerli_One({
   subsets: ["latin"],
   weight: "400",
+  display: "optional",
 });
 
 export default function Logo({ className = "text-2xl font-bold" }) {

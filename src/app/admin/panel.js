@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import ImageField, { ImagePreview } from "./image-field";
+import ProjectEditor from "./project-editor";
 import { collections, emptyRecord, backgroundColors, textColors } from "@/lib/content-schema.mjs";
 
 const inputClass = "w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-slate-950 focus:outline-none focus:ring-2 focus:ring-blue-500";
@@ -111,8 +112,8 @@ export default function AdminPanel({ authenticated }) {
       </nav>
       {error && <p role="alert" className="mb-5 rounded-lg border border-red-200 bg-red-50 p-4 text-red-800">{error}</p>}
       {message && <p role="status" className="mb-5 rounded-lg bg-green-100 p-4 text-green-900">{message}</p>}
-      <div className="grid gap-6 lg:grid-cols-[1fr_1.2fr]">
-        <section className="rounded-2xl border border-slate-200 bg-white p-5 md:p-6">
+      <div className="grid items-start gap-6 lg:grid-cols-[minmax(0,0.8fr)_minmax(0,1.4fr)]">
+        <section className="min-w-0 rounded-2xl border border-slate-200 bg-white p-5 md:p-6">
           <div className="flex justify-between items-center gap-3 mb-2"><h2 className="text-xl font-bold">{config.label}</h2>
             <button className={buttonClass} disabled={busy || loading} onClick={() => {
               if (editing && !window.confirm("Discard unsaved edits?")) return;
@@ -135,7 +136,7 @@ export default function AdminPanel({ authenticated }) {
             </li>)}
           </ul>}
         </section>
-        <section className="rounded-2xl border border-slate-200 bg-white p-5 md:p-6">
+        <section className="min-w-0 rounded-2xl border border-slate-200 bg-white p-5 md:p-6">
           {!editing ? <div className="py-16 text-center text-slate-500"><h2 className="text-xl font-semibold text-slate-900 mb-2">Make it yours</h2><p>Select an entry to edit, or add something new.</p></div> : <form onSubmit={(event) => {
             event.preventDefault();
             perform(async () => {
@@ -147,7 +148,15 @@ export default function AdminPanel({ authenticated }) {
           }}>
             <h2 className="text-xl font-bold mb-6">{editing.id ? "Edit entry" : "New entry"}</h2>
             <fieldset disabled={busy} className="space-y-5 disabled:opacity-60">
-              {config.fields.map(([field, label, type]) => field === "projectImage" ? <ImageField key={field} value={editing[field]} disabled={busy}
+              {collection === "projects" ? <ProjectEditor key={editing.id || "new"} project={editing} onChange={setEditing} disabled={busy} upload={async (file) => {
+                let url;
+                await perform(async () => {
+                  const uploaded = await request("/api/admin/images", "POST", file);
+                  url = uploaded.url;
+                  setMessage("Image uploaded. Save changes to publish it.");
+                });
+                return url;
+              }} /> : config.fields.map(([field, label, type]) => field === "projectImage" ? <ImageField key={field} value={editing[field]} disabled={busy}
                 onChange={(value) => setEditing((current) => ({ ...current, [field]: value }))}
                 onUpload={(file) => perform(async () => {
                   const uploaded = await request("/api/admin/images", "POST", file);
@@ -160,7 +169,7 @@ export default function AdminPanel({ authenticated }) {
                       : <input type={type} className={`${inputClass} mt-1`} value={editing[field] ?? ""} min={type === "number" ? 0 : undefined} max={type === "number" ? 100 : undefined} onChange={(event) => setEditing({ ...editing, [field]: type === "number" ? event.target.value === "" ? null : Number(event.target.value) : event.target.value })} />}
                 </>}
               </label>)}
-              <label className="block text-sm font-medium">Display order (lower numbers first)<input type="number" min="0" max="100000" required className={`${inputClass} mt-1`} value={editing.position} onChange={(event) => setEditing({ ...editing, position: Number(event.target.value) })} /></label>
+              {collection !== "projects" && <label className="block text-sm font-medium">Display order (lower numbers first)<input type="number" min="0" max="100000" required className={`${inputClass} mt-1`} value={editing.position} onChange={(event) => setEditing({ ...editing, position: Number(event.target.value) })} /></label>}
               <div className="flex flex-wrap gap-3 pt-4">
                 <button className={buttonClass} type="submit">{busy ? "Saving…" : "Save changes"}</button>
                 <button type="button" className="rounded-lg border border-slate-300 px-4 py-2" onClick={() => { if (window.confirm("Discard unsaved edits?")) setEditing(null); }}>Cancel</button>

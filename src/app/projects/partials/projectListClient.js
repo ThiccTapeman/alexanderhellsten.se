@@ -112,9 +112,9 @@ export default function ProjectList({ portfolioItems, technologies, showFilters 
       {/* Controls */}
       {
         showFilters && (
-          <div className="flex flex-col gap-6 text-black mb-10 container mx-auto p-4">
-            <div className="flex flex-wrap items-center gap-10">
-              <span className="text-sm font-medium">Filter by project type</span>
+          <div className="flex flex-col gap-2 text-black mb-2 container mx-auto p-4">
+            <div className="flex flex-wrap items-center gap-2">
+              <span className="text-sm font-bold">Filter by project type</span>
               <div className="flex flex-wrap gap-2">
                 {["", ...projectTypes].map((type) => (
                   <button
@@ -127,8 +127,8 @@ export default function ProjectList({ portfolioItems, technologies, showFilters 
                 ))}
               </div>
             </div>
-            <div className="flex flex-wrap items-center gap-10">
-              <span className="text-sm font-medium">Filter by tech</span>
+            <div className="flex flex-wrap items-center gap-2">
+              <span className="text-sm font-bold">Filter by tech</span>
               {allTech.length === 0 ? (
                 <span className="text-sm text-gray-500">
                   No technologies found
@@ -172,7 +172,9 @@ export default function ProjectList({ portfolioItems, technologies, showFilters 
             No projects match your filters
           </div>
         ) : (
-          limitedProjects.map((p, idx) => (
+          limitedProjects.map((p, idx) => {
+            const hasArticle = Boolean(p.id && p.hasArticle);
+            return (
             <article
               key={`${p.projectName}-${idx}`}
               className="group relative rounded-2xl border overflow-hidden transition hover:shadow-md border-black/10">
@@ -260,15 +262,26 @@ export default function ProjectList({ portfolioItems, technologies, showFilters 
                 </div>
                 {showLinks && (
                   <div className="flex gap-3 w-full mt-auto">
+                    {hasArticle && (
+                      <ActionButton
+                        href={`/projects/view/${p.id}`}
+                        w="flex-[3] min-w-0"
+                        p="px-2 py-3"
+                        additionalClasses="justify-center">
+                        Article
+                      </ActionButton>
+                    )}
                     {p.projectHomepage && (
                       <ActionButton
                         href={p.projectHomepage}
                         target="_blank"
                         rel="noreferrer"
-                        w="w-full"
+                        w={hasArticle ? "flex-1 min-w-0" : "w-full"}
+                        p={hasArticle ? "px-2 py-3" : "px-8 py-3"}
                         additionalClasses="justify-center">
                         <SquareArrowOutUpRight
-                          size={15}></SquareArrowOutUpRight>
+                          size={15} className={hasArticle ? "hidden sm:block shrink-0" : "shrink-0"}></SquareArrowOutUpRight>
+                        Live
                       </ActionButton>
                     )}
                     {p.projectGithub && (
@@ -277,9 +290,10 @@ export default function ProjectList({ portfolioItems, technologies, showFilters 
                         target="_blank"
                         rel="noreferrer"
                         secondary
-                        w={p.projectHomepage ? "" : "w-full justify-center"}
-                        additionalClasses="py-0 px-1">
-                        <Github size={15}></Github>
+                        w={hasArticle ? "flex-1 min-w-0" : p.projectHomepage ? "" : "w-full justify-center"}
+                        p={hasArticle ? "px-2 py-3" : "px-8 py-3"}
+                        additionalClasses={hasArticle ? "justify-center" : "py-0 px-1"}>
+                        <Github size={15} className={hasArticle ? "hidden sm:block shrink-0" : "shrink-0"}></Github>
                         Code
                       </ActionButton>
                     )}
@@ -287,7 +301,8 @@ export default function ProjectList({ portfolioItems, technologies, showFilters 
                 )}
               </div>
             </article>
-          ))
+          );
+          })
         )}
       </div>
     </>

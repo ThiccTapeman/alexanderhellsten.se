@@ -16,7 +16,7 @@ export default function Projects() {
     <>
       <Hero></Hero>
       <section className="w-full bg-white text-black">
-        <div className="container mx-auto pt-15 pb-15">
+        <div className="container mx-auto pt-2 pb-15">
           <ProjectList></ProjectList>
         </div>
       </section>

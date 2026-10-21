@@ -1,6 +1,6 @@
 import Link from "next/link";
 import Image from "next/image";
-import { notFound } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 import { ArrowLeft, ArrowUpRight, Github } from "lucide-react";
 import ActionButton from "@/components/ActionButton";
 import { getContent, getProject } from "@/lib/content";
@@ -9,13 +9,16 @@ import ProjectSections from "./project-sections";
 export async function generateMetadata({ params }) {
   const project = await getProject((await params).id);
   if (!project) return { title: "Project not found" };
+  if (!project.sections?.length) redirect("/projects");
   return { title: `${project.projectName} | Alexander Hellstén`, description: project.projectDescription.slice(0, 160),
-    alternates: { canonical: `https://alexanderhellsten.se/projects/view/${project.id}` } };
+    alternates: { canonical: `https://alexanderhellsten.se/projects/view/${project.id}` },
+    robots: { index: true, follow: true } };
 }
 
 export default async function ProjectPage({ params }) {
   const project = await getProject((await params).id);
   if (!project) notFound();
+  if (!project.sections?.length) redirect("/projects");
   const technologies = await getContent("technologies");
   const sections = project.sections || [];
 

@@ -217,7 +217,7 @@ export default function ProjectList({ portfolioItems, technologies, showFilters 
                 <header className="mb-2">
                   <div className="flex justify-between items-center">
                     <h3 className="text-lg text-black font-semibold">
-                      <Link href={`/projects/view/${p.id}`} className="focus-visible:outline-2 focus-visible:outline-offset-4">{p.projectName || "Untitled project"}</Link>
+                      {hasArticle ? <Link href={`/projects/view/${p.id}`} className="focus-visible:outline-2 focus-visible:outline-offset-4">{p.projectName || "Untitled project"}</Link> : (p.projectName || "Untitled project")}
                     </h3>
                     <div className="flex text-gray-500 gap-2">
                       <Calendar size={15}></Calendar>

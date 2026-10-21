@@ -161,9 +161,15 @@ try {
       assert.ok(publicHtml.includes(`/projects/view/${row.id}`), "Project card missing detail link");
       assert.match(publicHtml, /Article<\/a>/, "Projects with detail content must show an Article button");
       assert.ok(!publicHtml.includes("A unique case study narrative"), "Detail sections leaked into listing payload");
-      const detail = await request(`/projects/view/${row.id}`);
+      const sitemap = await request("/sitemap.xml");
+      assert.equal(sitemap.status, 200);
+      assert.ok((await sitemap.text()).includes(`<loc>https://alexanderhellsten.se/projects/view/${row.id}</loc>`), "New project missing from sitemap");
+      const detail = await request(`/projects/view/${row.id}`, { headers: { "User-Agent": "Googlebot" } });
       assert.equal(detail.status, 200);
+      assert.ok(!/noindex/i.test(detail.headers.get("x-robots-tag") || ""));
       const html = await detail.text();
+      assert.ok(html.includes(`<link rel="canonical" href="https://alexanderhellsten.se/projects/view/${row.id}"`));
+      assert.match(html, /<meta name="robots" content="index, follow"/);
       for (const expected of [record.projectName, "A unique case study narrative", "Interface screenshot", "Gallery screenshot", "A narrated walkthrough", "Fast feedback", "demo.vtt"]) assert.ok(html.includes(expected), `Missing detail content: ${expected}`);
       for (const route of ["/resume", "/resume/view/pdf", "/resume/view/printout"]) assert.ok((await (await request(route)).text()).includes(record.projectName), `Independent project missing from ${route}`);
       const invalid = await request("/api/admin/content/projects", { authenticated: true, method: "PUT", body: { id: row.id, version: row.version, record: { ...record, sections: [{ ...record.sections[1], image: { src: "javascript:alert(1)", alt: "Bad", caption: "" } }] } } });
@@ -178,17 +184,27 @@ try {
       assert.ok(revised.indexOf('id="section-features"') < revised.indexOf('id="section-story"'));
       assert.ok(!revised.includes('id="section-gallery"'));
       assert.ok(!(await (await request("/resume")).text()).includes(record.projectName));
+      const withoutArticle = await request("/api/admin/content/projects", { authenticated: true, method: "PUT", body: { id: row.id, version: row.version, record: { ...record, sections: [] } } });
+      assert.equal(withoutArticle.status, 200);
+      row = (await withoutArticle.json()).records.at(-1);
+      const noArticleDetail = await request(`/projects/view/${row.id}`, { headers: { "User-Agent": "Googlebot" } });
+      assert.equal(noArticleDetail.status, 307);
+      assert.equal(noArticleDetail.headers.get("location"), "/projects");
+      assert.ok(!(await (await request("/sitemap.xml")).text()).includes(`/projects/view/${row.id}</loc>`), "Project without article remained in sitemap");
     }
     const removed = await request(`/api/admin/content/${name}`, { authenticated: true, method: "DELETE", body: { id: row.id, version: row.version } });
     assert.equal(removed.status, 200);
     assert.ok(!(await (await request(page)).text()).includes(record[titleField]), `${name} deletion remained in the public cache`);
-    if (name === "projects") assert.equal((await request(`/projects/view/${row.id}`)).status, 404);
+    if (name === "projects") {
+      assert.equal((await request(`/projects/view/${row.id}`)).status, 404);
+      assert.ok(!(await (await request("/sitemap.xml")).text()).includes(`/projects/view/${row.id}</loc>`), "Deleted project remained in sitemap");
+    }
   }
   assert.equal((await request("/api/admin/content/nonprofit", { authenticated: true })).status, 404);
   for (const id of ["invalid", "0", "999999999999999999999999"]) assert.equal((await request(`/projects/view/${id}`)).status, 404);
   const legacyDetail = await request("/projects/view/1");
-  assert.equal(legacyDetail.status, 200);
-  assert.ok((await legacyDetail.text()).includes("Portfolio"));
+  assert.equal(legacyDetail.status, 307);
+  assert.equal(legacyDetail.headers.get("location"), "/projects");
   for (const path of ["/", "/projects", "/resume", "/resume/view/pdf", "/resume/view/printout", "/contact"]) {
     const response = await request(path);
     assert.equal(response.status, 200, `${path} failed`);

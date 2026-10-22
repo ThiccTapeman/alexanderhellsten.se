@@ -9,6 +9,8 @@
 // "/resume"
 
 import Education from "./partials/education";
+
+export const revalidate = 43200;
 import Experiences from "./partials/experiences";
 import Hero from "./partials/hero";
 

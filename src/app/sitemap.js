@@ -1,5 +1,7 @@
 import { getContent } from "@/lib/content";
 
+export const revalidate = 43200;
+
 /** @returns {Promise<import('next').MetadataRoute.Sitemap>} */
 export default async function sitemap() {
   const baseUrl = "https://alexanderhellsten.se";

@@ -9,7 +9,7 @@ Visit at: alexanderhellsten.se
 ## Portfolio database and admin
 
 `/admin` manages projects (including independent work), education, experience, and
-technologies. Public content is cached for five minutes, and successful admin
+technologies. Public database results and the main pages use 12-hour caching, and successful admin
 changes expire the affected cache immediately, so the next request sees saved
 changes without rebuilding the site. Admin reads and authentication are never cached.
 The PDF download in `public/` is still a static file; the browser's résumé PDF and
@@ -38,16 +38,27 @@ print views read the database.
    password, public registration, or web-based bootstrap endpoint.
 5. Set `DATABASE_URL` (or the Netlify-provided `NETLIFY_DB_URL`) and
    `APP_ORIGIN=https://alexanderhellsten.se` in **Netlify's environment settings**,
-   with access for server functions. Keep database credentials server-side; never
+   with access for both builds and server functions. Keep database credentials server-side; never
    use a `NEXT_PUBLIC_` prefix. Use Node.js 22.13+ or 24 for builds and development.
 6. Run `npm test` and `npm run build`, then deploy normally. Open `/admin` over
    HTTPS and sign in. Pending migrations run automatically before database queries.
 
 Use an isolated database for local development and deploy previews. Do not point
 untrusted preview code at the production database. `APP_ORIGIN` is one exact
-trusted origin, not a wildcard. Public database-backed pages need a configured,
-database at runtime; there is deliberately no JSON fallback. Tables are initialized
+trusted origin, not a wildcard. Public database-backed pages need a configured
+database during builds and at runtime; there is deliberately no JSON fallback. Tables are initialized
 once per server process; a restart or a manual migration also repairs missing tables.
+
+The home, projects, résumé views, and sitemap are prerendered during deployment.
+Articles keep server-rendered HTML so adding or removing sections can reliably
+switch between a page and a redirect; their database results are cached for 12 hours.
+Netlify's Next.js
+adapter serves ISR responses through its CDN; no custom cache headers are needed.
+Admin saves invalidate the data and dependent rendered pages. The first request
+after invalidation or a database cache miss may
+still wait for the server and database. Admin and API responses remain uncached.
+Run `npm run test:isr` to build against a disposable database and verify cache
+headers, article redirects, and admin changes through production HTTP requests.
 
 When all expected tables and migration records exist, startup performs only a
 read-only schema check. It does not execute DDL or read SQL files. Missing tables

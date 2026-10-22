@@ -11,6 +11,8 @@
 import Hero from "./partials/hero";
 import ProjectList from "./partials/projectList";
 
+export const revalidate = 43200;
+
 export default function Projects() {
   return (
     <>

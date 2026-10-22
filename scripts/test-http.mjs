@@ -66,9 +66,13 @@ try {
   }
   assert.ok(ready, "Next.js did not become ready");
 
-  // The real production application must bootstrap the entirely empty database.
+  // Articles generate at runtime even when the main pages were built with ISR.
+  // This uncached lookup must bootstrap the entirely empty runtime database.
+  assert.equal((await request("/projects/view/1")).status, 307);
   const firstPage = await request("/projects");
   assert.equal(firstPage.status, 200);
+  assert.match(firstPage.headers.get("cache-control"), /s-maxage=43200/);
+  assert.equal(firstPage.headers.get("x-nextjs-cache"), "HIT");
   const initialProjectsHtml = await firstPage.text();
   assert.ok(initialProjectsHtml.includes("Backpack Keybinds"));
   assert.ok(!/Article<\/a>/.test(initialProjectsHtml), "Projects without detail content must not show an Article button");
@@ -166,6 +170,7 @@ try {
       assert.ok((await sitemap.text()).includes(`<loc>https://alexanderhellsten.se/projects/view/${row.id}</loc>`), "New project missing from sitemap");
       const detail = await request(`/projects/view/${row.id}`, { headers: { "User-Agent": "Googlebot" } });
       assert.equal(detail.status, 200);
+      assert.match(detail.headers.get("cache-control"), /private/);
       assert.ok(!/noindex/i.test(detail.headers.get("x-robots-tag") || ""));
       const html = await detail.text();
       assert.ok(html.includes(`<link rel="canonical" href="https://alexanderhellsten.se/projects/view/${row.id}"`));
@@ -191,6 +196,12 @@ try {
       assert.equal(noArticleDetail.status, 307);
       assert.equal(noArticleDetail.headers.get("location"), "/projects");
       assert.ok(!(await (await request("/sitemap.xml")).text()).includes(`/projects/view/${row.id}</loc>`), "Project without article remained in sitemap");
+      const restoredArticle = await request("/api/admin/content/projects", { authenticated: true, method: "PUT", body: { id: row.id, version: row.version, record } });
+      assert.equal(restoredArticle.status, 200);
+      row = (await restoredArticle.json()).records.at(-1);
+      const restoredDetail = await request(`/projects/view/${row.id}`);
+      assert.equal(restoredDetail.status, 200, "Cached redirect survived restoring the article");
+      assert.ok((await restoredDetail.text()).includes("A unique case study narrative"));
     }
     const removed = await request(`/api/admin/content/${name}`, { authenticated: true, method: "DELETE", body: { id: row.id, version: row.version } });
     assert.equal(removed.status, 200);

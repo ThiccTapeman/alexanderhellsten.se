@@ -6,10 +6,14 @@ import ActionButton from "@/components/ActionButton";
 import { getContent, getProject } from "@/lib/content";
 import ProjectSections from "./project-sections";
 
+// Keep redirects reliable when article sections are added or removed.
+// Project and technology database reads still use the shared 12-hour cache.
+export const dynamic = "force-dynamic";
+
 export async function generateMetadata({ params }) {
   const project = await getProject((await params).id);
   if (!project) return { title: "Project not found" };
-  if (!project.sections?.length) redirect("/projects");
+  if (!project.sections?.length) return { robots: { index: false, follow: true } };
   return { title: `${project.projectName} | Alexander Hellstén`, description: project.projectDescription.slice(0, 160),
     alternates: { canonical: `https://alexanderhellsten.se/projects/view/${project.id}` },
     robots: { index: true, follow: true } };

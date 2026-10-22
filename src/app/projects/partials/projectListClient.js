@@ -3,6 +3,7 @@
 import { useMemo, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { trackEvent } from "@/lib/analytics";
 
 
 import ActionButton from "@/components/ActionButton";
@@ -42,6 +43,7 @@ export default function ProjectList({ portfolioItems, technologies, showFilters 
   }, [techMap, portfolioItems]);
 
   const toggleTech = (tech) => {
+    trackEvent("project_filter", { filter: "technology", value: tech, enabled: !selectedTech.has(tech) });
     setSelectedTech((prev) => {
       const next = new Set(prev);
       if (next.has(tech)) next.delete(tech);
@@ -51,6 +53,7 @@ export default function ProjectList({ portfolioItems, technologies, showFilters 
   };
 
   const clearFilters = () => {
+    trackEvent("project_filters_clear");
     setSelectedTech(new Set());
     setSelectedType("");
   };
@@ -120,7 +123,10 @@ export default function ProjectList({ portfolioItems, technologies, showFilters 
                 {["", ...projectTypes].map((type) => (
                   <button
                     key={type || "all"}
-                    onClick={() => setSelectedType(type)}
+                    onClick={() => {
+                      setSelectedType(type);
+                      trackEvent("project_filter", { filter: "type", value: type || "all" });
+                    }}
                     className={`rounded-full bg-gray-200 px-3 py-1 text-sm ${selectedType === type ? "ring-2 ring-black" : ""}`}
                     aria-pressed={selectedType === type}>
                     {type || "All"}

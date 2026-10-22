@@ -6,6 +6,28 @@ This github project works as a personal portfolio for me.
 
 Visit at: alexanderhellsten.se
 
+### Public analytics
+
+Simple Analytics loads once on `alexanderhellsten.se` and `www.alexanderhellsten.se`.
+Local development and deploy-preview hostnames do not send events. Add the domain
+to your Simple Analytics account; no API key is needed in the website.
+The standard tracker handles page views and client-side navigation. Do not also
+install an automated events script or a second tracker through Netlify snippets.
+
+Custom events cover résumé downloads, other download links, public navigation,
+project article links, external links, email/phone links, article section links,
+image opening, video plays, details expansion, project filters, and contact form
+attempts/results. Events include the source page and relevant destination path,
+placement, filter, or error category. Contact contents, email addresses, URL query
+strings, and fragments are not added to custom metadata. Admin routes are excluded.
+Hover events are intentionally omitted. Counts are browser observations rather
+than guaranteed downloads or email delivery receipts. A contact success means
+the API reported success. Blocked analytics does not interrupt site interactions.
+
+After deploying, test links, project filters, and a contact submission on the live
+domain and inspect the events in Simple Analytics. Local checks intentionally do
+not send production analytics.
+
 ## Portfolio database and admin
 
 `/admin` manages projects (including independent work), education, experience, and

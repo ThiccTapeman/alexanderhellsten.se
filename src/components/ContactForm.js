@@ -10,6 +10,7 @@
 
 import { Send } from "lucide-react";
 import { useState, useRef, useEffect } from "react";
+import { trackEvent } from "@/lib/analytics";
 
 export default function ContactForm({ debug, initialRemainingMs = 0 }) {
   // Adds in a debug state.
@@ -75,6 +76,7 @@ export default function ContactForm({ debug, initialRemainingMs = 0 }) {
       return;
     }
     setStatus("loading");
+    if (!form.website) trackEvent("contact_submit");
 
     // Times the request out
     const controller = new AbortController();
@@ -90,6 +92,7 @@ export default function ContactForm({ debug, initialRemainingMs = 0 }) {
       });
       const data = await res.json().catch(() => ({}));
       if (res.ok && data.ok) {
+        if (!form.website) trackEvent("contact_success");
         setStatus("sent");
         setForm({ name: "", email: "", subject: "", message: "", website: "" });
         // API should've set contact_sent=Date.now
@@ -100,10 +103,12 @@ export default function ContactForm({ debug, initialRemainingMs = 0 }) {
           }`;
         }
       } else {
+        if (!form.website) trackEvent("contact_error", { reason: "server", status: res.status });
         setStatus("error");
         setError(data.error || `Request failed with ${res.status}`);
       }
     } catch (err) {
+      if (!form.website) trackEvent("contact_error", { reason: err.name === "AbortError" ? "timeout" : "network" });
       setStatus("error");
       setError(
         err.name === "AbortError" ? "Request timed out." : "Network error."

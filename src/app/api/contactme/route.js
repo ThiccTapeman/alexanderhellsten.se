@@ -22,6 +22,7 @@ const ensureEnv = () => {
     "SMTP_PORT",
     "SMTP_USER",
     "SMTP_PASS",
+    "FROM_EMAIL",
     "TO_EMAIL",
   ];
   const missing = required.filter((k) => !process.env[k]);
@@ -119,7 +120,7 @@ export async function POST(request) {
 
     // Send to you
     const ownerMail = transporter.sendMail({
-      from: `"${brand} Contact" ${process.env.TO_EMAIL}`,
+      from: `"${brand} Contact" ${process.env.FROM_EMAIL}`,
       replyTo: email,
       to: process.env.TO_EMAIL,
       subject: `[${brand}] ${String(subject).slice(0, 180)}`,
@@ -133,7 +134,7 @@ export async function POST(request) {
 
     // Send confirmation to the sender
     const userMail = transporter.sendMail({
-      from: `"Alexander Hellstén" ${process.env.TO_EMAIL}`,
+      from: `"Alexander Hellstén" ${process.env.FROM_EMAIL}`,
       to: email,
       replyTo: process.env.TO_EMAIL,
       subject: `Thanks for contacting ${brand}`,
